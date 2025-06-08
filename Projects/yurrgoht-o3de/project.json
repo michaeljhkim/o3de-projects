@@ -15,8 +15,6 @@
     "icon_path": "preview.png",
     "engine": "o3de-sdk",
     "external_subdirectories": [
-        "ProjectGems",
-        "ProjectGems/TerrainGenerator",
         "Gem"
     ],
     "restricted": "yurrgoht-o3de",

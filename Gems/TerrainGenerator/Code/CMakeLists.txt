@@ -30,14 +30,6 @@ ly_add_target(
     BUILD_DEPENDENCIES
         INTERFACE
            AZ::AzCore
-
-            Gem::Atom_RPI.Public
-            Gem::Atom_Utils.Static
-            Gem::Atom_Feature_Common.Public
-            Gem::CommonFeaturesAtom.Static
-            Gem::GradientSignal.Static
-            Gem::SurfaceData.Static
-            Gem::LmbrCentral.API
 )
 
 # The ${gem_name}.Private.Object target is an internal target
@@ -58,6 +50,7 @@ ly_add_target(
         PUBLIC
             AZ::AzCore
             AZ::AzFramework
+            Gem::GradientSignal
 )
 
 # Here add ${gem_name} target, it depends on the Private Object library and Public API interface
@@ -77,6 +70,8 @@ ly_add_target(
             Gem::${gem_name}.API
         PRIVATE
             Gem::${gem_name}.Private.Object
+    RUNTIME_DEPENDENCIES
+        Gem::GradientSignal
 )
 
 # Include the gem name into the Client Module source file
@@ -142,6 +137,7 @@ if(PAL_TRAIT_BUILD_HOST_TOOLS)
         BUILD_DEPENDENCIES
             PUBLIC
                 AZ::AzToolsFramework
+                Gem::GradientSignal.Editor.Static
                 ${gem_name}.Private.Object
     )
 

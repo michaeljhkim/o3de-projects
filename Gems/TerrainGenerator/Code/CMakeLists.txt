@@ -51,6 +51,8 @@ ly_add_target(
             AZ::AzCore
             AZ::AzFramework
             Gem::GradientSignal
+        PRIVATE
+            Gem::LmbrCentral
 )
 
 # Here add ${gem_name} target, it depends on the Private Object library and Public API interface
@@ -71,6 +73,7 @@ ly_add_target(
         PRIVATE
             Gem::${gem_name}.Private.Object
     RUNTIME_DEPENDENCIES
+        Gem::LmbrCentral
         Gem::GradientSignal
 )
 
@@ -90,8 +93,8 @@ PROPERTY COMPILE_DEFINITIONS
 # By default, we will specify that the above target ${gem_name} would be used by
 # Client and Server type targets when this gem is enabled.  If you don't want it
 # active in Clients or Servers by default, delete one of both of the following lines:
-ly_create_alias(NAME ${gem_name}.Servers  NAMESPACE Gem TARGETS Gem::${gem_name} Gem::SurfaceData.Servers Gem::GradientSignal.Servers)
 ly_create_alias(NAME ${gem_name}.Clients  NAMESPACE Gem TARGETS Gem::${gem_name} Gem::SurfaceData.Clients Gem::GradientSignal.Clients)
+ly_create_alias(NAME ${gem_name}.Servers  NAMESPACE Gem TARGETS Gem::${gem_name} Gem::SurfaceData.Servers Gem::GradientSignal.Servers)
 ly_create_alias(NAME ${gem_name}.Unified  NAMESPACE Gem TARGETS Gem::${gem_name} Gem::SurfaceData.Unified Gem::GradientSignal.Unified)
 
 # For the Client and Server variants of ${gem_name} Gem, an alias to the ${gem_name}.API target will be made
@@ -137,8 +140,11 @@ if(PAL_TRAIT_BUILD_HOST_TOOLS)
         BUILD_DEPENDENCIES
             PUBLIC
                 AZ::AzToolsFramework
-                Gem::GradientSignal.Editor.Static
                 ${gem_name}.Private.Object
+                Gem::SurfaceData
+            PRIVATE
+                Gem::LmbrCentral.Editor
+                Gem::GradientSignal.Editor.Static
     )
 
     ly_add_target(
@@ -157,6 +163,10 @@ if(PAL_TRAIT_BUILD_HOST_TOOLS)
                 Gem::${gem_name}.Editor.API
             PRIVATE
                 Gem::${gem_name}.Editor.Private.Object
+                Gem::LmbrCentral.Editor
+        RUNTIME_DEPENDENCIES
+            Gem::LmbrCentral.Editor
+            Gem::SurfaceData.Editor
     )
 
     # Include the gem name into the Editor Module source file

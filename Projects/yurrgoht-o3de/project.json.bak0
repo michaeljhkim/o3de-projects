@@ -1,0 +1,46 @@
+{
+    "project_name": "yurrgoht-o3de",
+    "version": "0.0.1",
+    "project_id": "{D1C0321B-2BD2-4012-8290-08B98B2E7CAD}",
+    "origin": "The primary repo for yurrgoht-o3de goes here: i.e. http://www.mydomain.com",
+    "license": "What license yurrgoht-o3de uses goes here: i.e. https://opensource.org/licenses/Apache-2.0 Or https://opensource.org/licenses/MIT etc.",
+    "display_name": "yurrgoht-o3de",
+    "summary": "A short description of yurrgoht-o3de.",
+    "canonical_tags": [
+        "Project"
+    ],
+    "user_tags": [
+        "yurrgoht-o3de"
+    ],
+    "icon_path": "preview.png",
+    "engine": "o3de",
+    "external_subdirectories": [
+        "Gem"
+    ],
+    "restricted": "yurrgoht-o3de",
+    "gem_names": [
+        "yurrgoht-o3de",
+        "Atom",
+        "AudioSystem",
+        "CameraFramework",
+        "DebugDraw",
+        "DiffuseProbeGrid",
+        "EditorPythonBindings",
+        "EMotionFX",
+        "GameState",
+        "ImGui",
+        "LandscapeCanvas",
+        "LyShine",
+        "MiniAudio",
+        "PhysX",
+        "PrimitiveAssets",
+        "PrefabBuilder",
+        "SaveData",
+        "ScriptCanvasPhysics",
+        "ScriptEvents",
+        "StartingPointInput",
+        "TextureAtlas",
+        "WhiteBox",
+        "RemoteTools"
+    ]
+}

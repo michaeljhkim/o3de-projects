@@ -1,0 +1,51 @@
+{
+    "project_name": "yurrgoht-o3de",
+    "version": "0.0.1",
+    "project_id": "{D1C0321B-2BD2-4012-8290-08B98B2E7CAD}",
+    "origin": "The primary repo for yurrgoht-o3de goes here: i.e. http://www.mydomain.com",
+    "license": "What license yurrgoht-o3de uses goes here: i.e. https://opensource.org/licenses/Apache-2.0 Or https://opensource.org/licenses/MIT etc.",
+    "display_name": "yurrgoht-o3de",
+    "summary": "A short description of yurrgoht-o3de.",
+    "canonical_tags": [
+        "Project"
+    ],
+    "user_tags": [
+        "yurrgoht-o3de"
+    ],
+    "icon_path": "preview.png",
+    "engine": "o3de-sdk",
+    "external_subdirectories": [
+        "ProjectGems",
+        "ProjectGems/TerrainGenerator",
+        "Gem"
+    ],
+    "restricted": "yurrgoht-o3de",
+    "gem_names": [
+        "Atom",
+        "AudioSystem",
+        "CameraFramework",
+        "DebugDraw",
+        "DiffuseProbeGrid",
+        "EMotionFX",
+        "EditorPythonBindings",
+        "GameState",
+        "ImGui",
+        "LandscapeCanvas",
+        "LyShine",
+        "MiniAudio",
+        "PhysX",
+        "PrefabBuilder",
+        "PrimitiveAssets",
+        "RemoteTools",
+        "SaveData",
+        "ScriptCanvasPhysics",
+        "ScriptEvents",
+        "StartingPointInput",
+        "Terrain",
+        "TerrainGenerator==1.0.0",
+        "TextureAtlas",
+        "WhiteBox",
+        "yurrgoht-o3de"
+    ],
+    "engine_version": "4.2.0"
+}

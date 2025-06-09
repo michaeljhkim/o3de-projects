@@ -1,14 +1,12 @@
 
 #include "TerrainGeneratorSystemComponent.h"
-
 #include <TerrainGenerator/TerrainGeneratorTypeIds.h>
-
 #include <AzCore/Serialization/SerializeContext.h>
+#include <AzCore/Serialization/EditContext.h>
 
 namespace TerrainGenerator
 {
-    AZ_COMPONENT_IMPL(TerrainGeneratorSystemComponent, "TerrainGeneratorSystemComponent",
-        TerrainGeneratorSystemComponentTypeId);
+    //AZ_COMPONENT_IMPL(TerrainGeneratorSystemComponent, "TerrainGeneratorSystemComponent", TerrainGeneratorSystemComponentTypeId);
 
     void TerrainGeneratorSystemComponent::Reflect(AZ::ReflectContext* context)
     {
@@ -17,6 +15,16 @@ namespace TerrainGenerator
             serializeContext->Class<TerrainGeneratorSystemComponent, AZ::Component>()
                 ->Version(0)
                 ;
+            
+            /*
+            if (AZ::EditContext* ec = serializeContext->GetEditContext())
+            {
+                ec->Class<TerrainGeneratorSystemComponent>("TerrainGenerator Gradient", "System component for TerrainGenerator gradient gem")
+                    ->ClassElement(AZ::Edit::ClassElements::EditorData, "")
+                        ->Attribute(AZ::Edit::Attributes::AutoExpand, true)
+                    ;
+            }
+            */
         }
     }
 
@@ -32,10 +40,12 @@ namespace TerrainGenerator
 
     void TerrainGeneratorSystemComponent::GetRequiredServices([[maybe_unused]] AZ::ComponentDescriptor::DependencyArrayType& required)
     {
+        (void)required;
     }
 
     void TerrainGeneratorSystemComponent::GetDependentServices([[maybe_unused]] AZ::ComponentDescriptor::DependencyArrayType& dependent)
     {
+        (void)dependent;
     }
 
     TerrainGeneratorSystemComponent::TerrainGeneratorSystemComponent()

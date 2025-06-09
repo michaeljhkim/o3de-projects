@@ -4,16 +4,16 @@
 namespace TerrainGenerator
 {
     // System Component TypeIds
-    inline constexpr const char* TerrainGeneratorSystemComponentTypeId = "{07D08598-AF92-41A5-80F3-11830D17619A}";
-    inline constexpr const char* TerrainGeneratorEditorSystemComponentTypeId = "{DA5AEA25-9B7F-4C93-A992-9F1C52C1A757}";
+    inline constexpr const char* TerrainGeneratorSystemComponentTypeId = "{66342265-cf2b-4819-9d55-338cbbeccda1}";
+    inline constexpr const char* TerrainGeneratorEditorSystemComponentTypeId = "{ca7498eb-898c-4111-8367-44797b9f012d}";
 
     // Module derived classes TypeIds
-    inline constexpr const char* TerrainGeneratorModuleInterfaceTypeId = "{407C068B-DF4A-465A-B88D-D695E05CB901}";
-    inline constexpr const char* TerrainGeneratorModuleTypeId = "{62CD4CF1-CDDD-4773-B960-EB6052E07BE0}";
+    inline constexpr const char* TerrainGeneratorModuleInterfaceTypeId = "{a514b27b-bd09-4fcd-bf4c-ddbc01241faa}";
+    inline constexpr const char* TerrainGeneratorModuleTypeId = "{7f902000-b4c8-44b9-9ff2-3fb2bf312f23}";
     // The Editor Module by default is mutually exclusive with the Client Module
     // so they use the Same TypeId
     inline constexpr const char* TerrainGeneratorEditorModuleTypeId = TerrainGeneratorModuleTypeId;
 
     // Interface TypeIds
-    inline constexpr const char* TerrainGeneratorRequestsTypeId = "{D4561753-B9D8-4D6C-A6C4-3C4F8078A36B}";
+    inline constexpr const char* TerrainGeneratorRequestsTypeId = "{ccfe281c-5b5d-4a05-b188-df27c8d01779}";
 } // namespace TerrainGenerator

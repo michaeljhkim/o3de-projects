@@ -1,6 +1,7 @@
 
 #include <TerrainGenerator/TerrainGeneratorTypeIds.h>
 #include <TerrainGeneratorModuleInterface.h>
+#include "TerrainGeneratorGradientEditorComponent.h"
 #include "TerrainGeneratorEditorSystemComponent.h"
 
 namespace TerrainGenerator
@@ -20,6 +21,7 @@ namespace TerrainGenerator
             // This happens through the [MyComponent]::Reflect() function.
             m_descriptors.insert(m_descriptors.end(), {
                 TerrainGeneratorEditorSystemComponent::CreateDescriptor(),
+                TerrainGeneratorGradientEditorComponent::CreateDescriptor()
             });
         }
 

@@ -57,7 +57,7 @@ namespace TerrainGenerator
         float m_cellularJitter = 0.45f;
     };
 
-
+    inline constexpr AZ::TypeId TerrainGeneratorGradientComponentTypeId{ "{fe33d2b2-4843-457a-8eff-1b612fffbc79}" };
 
     class TerrainGeneratorGradientComponent
         : public AZ::Component
@@ -66,8 +66,8 @@ namespace TerrainGenerator
         , private GradientSignal::GradientTransformNotificationBus::Handler
     {
     public:
-        //friend class EditorFastNoiseGradientComponent;
-        //template<typename, typename> friend class LmbrCentral::EditorWrappedComponentBase;
+        friend class TerrainGeneratorGradientEditorComponent;
+        template<typename, typename> friend class LmbrCentral::EditorWrappedComponentBase;
 
         //AZ_COMPONENT_DECL(TerrainGeneratorGradientComponent);
         AZ_COMPONENT(TerrainGenerator::TerrainGeneratorGradientComponent, "{2a74a3d4-0ba3-4f3c-a12a-ded002e9e2a8}", AZ::Component);
@@ -157,28 +157,23 @@ namespace TerrainGenerator
         void OnGradientTransformChanged(const GradientSignal::GradientTransform& newTransform) override;
 
         // FastNoiseGradientRequest overrides...
-        int GetRandomSeed() const override;
+        // all Get functions - decided to move definitions here for simplicity 
+        int GetRandomSeed() const { return m_configuration.m_seed; }
+        float GetFrequency() const { return m_configuration.m_frequency; }
+        FastNoise::Interp GetInterpolation() const { return m_configuration.m_interp; }
+        FastNoise::NoiseType GetNoiseType() const { return m_configuration.m_noiseType; }
+        int GetOctaves() const { return m_configuration.m_octaves; }
+        float GetLacunarity() const { return m_configuration.m_lacunarity; }
+        float GetGain() const { return m_configuration.m_gain; }
+        FastNoise::FractalType GetFractalType() const { return m_configuration.m_fractalType; }
+
         void SetRandomSeed(int seed) override;
-
-        float GetFrequency() const override;
         void SetFrequency(float freq) override;
-
-        FastNoise::Interp GetInterpolation() const override;
         void SetInterpolation(FastNoise::Interp interp) override;
-
-        FastNoise::NoiseType GetNoiseType() const override;
         void SetNoiseType(FastNoise::NoiseType type) override;
-
-        int GetOctaves() const override;
         void SetOctaves(int octaves) override;
-
-        float GetLacunarity() const override;
         void SetLacunarity(float lacunarity) override;
-
-        float GetGain() const override;
         void SetGain(float gain) override;
-
-        FastNoise::FractalType GetFractalType() const override;
         void SetFractalType(FastNoise::FractalType type) override;
 
         template <typename TValueType, TValueType TerrainGeneratorGradientConfig::*TConfigMember, void (FastNoise::*TMethod)(TValueType)>

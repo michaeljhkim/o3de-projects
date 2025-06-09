@@ -54,7 +54,16 @@
             },
             "EditorTerrainWorldRendererComponent": {
                 "$type": "EditorTerrainWorldRendererComponent",
-                "Id": 7227861562556110960
+                "Id": 7227861562556110960,
+                "Configuration": {
+                    "MeshConfiguration": {
+                        "RenderDistance": 2048.0,
+                        "FirstLodDistance": 256.0
+                    },
+                    "DetailMaterialConfiguration": {
+                        "FadeDistance": 128.0
+                    }
+                }
             },
             "LocalViewBookmarkComponent": {
                 "$type": "LocalViewBookmarkComponent",
@@ -152,7 +161,8 @@
                     "Id": 16880285896855930892,
                     "Controller": {
                         "Configuration": {
-                            "Field of View": 55.0
+                            "Field of View": 60.0,
+                            "Far Clip Plane Distance": 512.0
                         }
                     }
                 },
@@ -170,14 +180,14 @@
                     "Parent Entity": "Entity_[1176639161715]",
                     "Transform Data": {
                         "Translate": [
-                            -2.3000001907348633,
-                            -3.9368600845336914,
-                            1.0
+                            -335.9586181640625,
+                            -430.6679382324219,
+                            374.71759033203125
                         ],
                         "Rotate": [
-                            -2.050307512283325,
-                            1.9552897214889526,
-                            -43.623355865478516
+                            -23.112987518310547,
+                            24.556140899658203,
+                            -44.236961364746094
                         ]
                     }
                 },
@@ -197,7 +207,8 @@
                     "$type": "GenericComponentWrapper",
                     "Id": 7255796294953281766,
                     "m_template": {
-                        "$type": "FlyCameraInputComponent"
+                        "$type": "FlyCameraInputComponent",
+                        "Move Speed": 100.0
                     }
                 },
                 "Component_[8866210352157164042]": {
@@ -352,8 +363,8 @@
                     "AxisAlignedBoxShape": {
                         "Configuration": {
                             "Dimensions": [
-                                512.0,
-                                512.0,
+                                2048.0,
+                                2048.0,
                                 50.0
                             ],
                             "TranslationOffset": [
@@ -440,21 +451,15 @@
                     "$type": "EditorDisabledCompositionComponent",
                     "Id": 13683504678714580163,
                     "DisabledComponents": {
-                        "EditorImageGradientComponent": {
-                            "$type": "EditorImageGradientComponent",
-                            "Id": 14764710573509187492,
+                        "EditorPerlinGradientComponent": {
+                            "$type": "EditorPerlinGradientComponent",
+                            "Id": 5697971632935004031,
+                            "Configuration": {
+                                "amplitude": 0.5600000023841858,
+                                "frequency": 0.019999999552965164
+                            },
                             "Previewer": {
                                 "BoundsEntity": ""
-                            },
-                            "Configuration": {
-                                "StreamingImageAsset": {
-                                    "assetId": {
-                                        "guid": "{EAD9B8C0-80CB-5EC1-A900-0B8003D8C352}",
-                                        "subId": 1000
-                                    },
-                                    "assetHint": "assets/tutorial_terrain_heightmap_gsi.png.streamingimage"
-                                },
-                                "SamplingType": 1
                             }
                         }
                     }
@@ -471,11 +476,10 @@
                     "$type": "EditorGradientTransformComponent",
                     "Id": 14052015258585524872,
                     "Configuration": {
-                        "WrappingType": 1,
                         "ShapeReference": "",
                         "Bounds": [
-                            512.0,
-                            512.0,
+                            2048.0,
+                            2048.0,
                             50.0
                         ],
                         "Center": [
@@ -501,17 +505,6 @@
                     "$type": "EditorPendingCompositionComponent",
                     "Id": 2484389983283982010
                 },
-                "EditorPerlinGradientComponent": {
-                    "$type": "EditorPerlinGradientComponent",
-                    "Id": 5697971632935004031,
-                    "Configuration": {
-                        "amplitude": 0.5600000023841858,
-                        "frequency": 0.019999999552965164
-                    },
-                    "Previewer": {
-                        "BoundsEntity": ""
-                    }
-                },
                 "EditorReferenceShapeComponent": {
                     "$type": "EditorReferenceShapeComponent",
                     "Id": 4788380883912620169,
@@ -522,6 +515,21 @@
                 "EditorVisibilityComponent": {
                     "$type": "EditorVisibilityComponent",
                     "Id": 15323191526833215721
+                },
+                "TerrainGeneratorGradientEditorComponent": {
+                    "$type": "TerrainGeneratorGradientEditorComponent",
+                    "Id": 2635996014970502059,
+                    "Configuration": {
+                        "NoiseType": 2,
+                        "Frequency": 0.019999999552965164,
+                        "Octaves": 1,
+                        "Lacunarity": 0.6000000238418579,
+                        "Gain": 0.6499999761581421,
+                        "Interp": 1
+                    },
+                    "Previewer": {
+                        "BoundsEntity": ""
+                    }
                 },
                 "TransformComponent": {
                     "$type": "{27F1E1A1-8D9D-4C3B-BD3A-AFB9762449C0} TransformComponent",

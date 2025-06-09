@@ -2,7 +2,6 @@
 #pragma once
 
 #include <AzToolsFramework/API/ToolsApplicationAPI.h>
-
 #include <Clients/TerrainGeneratorSystemComponent.h>
 
 namespace TerrainGenerator
@@ -14,7 +13,8 @@ namespace TerrainGenerator
     {
         using BaseSystemComponent = TerrainGeneratorSystemComponent;
     public:
-        AZ_COMPONENT_DECL(TerrainGeneratorEditorSystemComponent);
+        //AZ_COMPONENT_DECL(TerrainGeneratorEditorSystemComponent);
+        AZ_COMPONENT(TerrainGeneratorEditorSystemComponent, TerrainGeneratorEditorSystemComponentTypeId);
 
         static void Reflect(AZ::ReflectContext* context);
 

@@ -26,6 +26,7 @@ ly_add_target(
         ${pal_dir}/terraingenerator_api_files.cmake
     INCLUDE_DIRECTORIES
         INTERFACE
+            .       # To give acess to External/FastNoise
             Include
     BUILD_DEPENDENCIES
         INTERFACE
@@ -44,8 +45,8 @@ ly_add_target(
         O3DE_PRIVATE_TARGET TRUE
     INCLUDE_DIRECTORIES
         PRIVATE
-            Include
             .       # To give acess to External/FastNoise
+            Include
             Source
     BUILD_DEPENDENCIES
         PUBLIC
@@ -118,6 +119,7 @@ if(PAL_TRAIT_BUILD_HOST_TOOLS)
             ${pal_dir}/terraingenerator_editor_api_files.cmake
         INCLUDE_DIRECTORIES
             INTERFACE
+                .       # To give acess to External/FastNoise
                 Include
         BUILD_DEPENDENCIES
             INTERFACE
@@ -136,6 +138,7 @@ if(PAL_TRAIT_BUILD_HOST_TOOLS)
             O3DE_PRIVATE_TARGET TRUE
         INCLUDE_DIRECTORIES
             PRIVATE
+                .       # To give acess to External/FastNoise
                 Include
                 Source
         BUILD_DEPENDENCIES

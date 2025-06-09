@@ -1,9 +1,14 @@
-
-#include <TerrainGeneratorGradientComponent.h>
+#include <Clients/TerrainGeneratorGradientComponent.h>
 
 #include <AzCore/Serialization/SerializeContext.h>
 #include <AzCore/Serialization/EditContext.h>
 #include <AzCore/RTTI/BehaviorContext.h>
+
+// Headers that was in the FastNoise gem
+#include <AzCore/Math/MathUtils.h>
+#include <LmbrCentral/Dependency/DependencyNotificationBus.h>
+//#include <External/FastNoise/FastNoise.h>
+//#include <GradientSignal/Ebuses/GradientTransformRequestBus.h>
 
 namespace TerrainGenerator
 {
@@ -183,25 +188,61 @@ namespace TerrainGenerator
         }
     }
 
+/*
+************************************************************************************************************************************
+------------------------------------------------------------------------------------------------------------------------------------
+- THE CONFIG ENDS HERE
+- THE ACTUAL COMPONENT STARTS HERE
+------------------------------------------------------------------------------------------------------------------------------------
+************************************************************************************************************************************
+*/
 
     //AZ_COMPONENT_IMPL(TerrainGeneratorGradientComponent, "TerrainGeneratorGradientComponent", "{862772FD-B012-4F54-923F-B05960A88B1B}");
 
     void TerrainGeneratorGradientComponent::Activate()
     {
+        // This will immediately call OnGradientTransformChanged and initialize m_gradientTransform.
+        GradientSignal::GradientTransformNotificationBus::Handler::BusConnect(GetEntityId());
+
+        // Some platforms require random seeds to be > 0.  Clamp to a positive range to ensure we're always safe.
+        m_generator.SetSeed(AZ::GetMax(m_configuration.m_seed, 1));
+        m_generator.SetFrequency(m_configuration.m_frequency);
+        m_generator.SetInterp(m_configuration.m_interp);
+        m_generator.SetNoiseType(m_configuration.m_noiseType);
+
+        m_generator.SetFractalOctaves(m_configuration.m_octaves);
+        m_generator.SetFractalLacunarity(m_configuration.m_lacunarity);
+        m_generator.SetFractalGain(m_configuration.m_gain);
+        m_generator.SetFractalType(m_configuration.m_fractalType);
+
+        m_generator.SetCellularDistanceFunction(m_configuration.m_cellularDistanceFunction);
+        m_generator.SetCellularReturnType(m_configuration.m_cellularReturnType);
+        m_generator.SetCellularJitter(m_configuration.m_cellularJitter);
+
         TerrainGeneratorGradientRequestBus::Handler::BusConnect(GetEntityId());
+
+        // Connect to GradientRequestBus last so that everything is initialized before listening for gradient queries.
+        GradientSignal::GradientRequestBus::Handler::BusConnect(GetEntityId());
     }
 
     void TerrainGeneratorGradientComponent::Deactivate()
     {
+        // Disconnect from GradientRequestBus first to ensure no queries are in process when deactivating.
+        GradientSignal::GradientRequestBus::Handler::BusDisconnect();
+
         TerrainGeneratorGradientRequestBus::Handler::BusDisconnect(GetEntityId());
+        GradientSignal::GradientTransformNotificationBus::Handler::BusDisconnect();
     }
 
     void TerrainGeneratorGradientComponent::Reflect(AZ::ReflectContext* context)
     {
+        TerrainGeneratorGradientConfig::Reflect(context);
+
         if (auto serializeContext = azrtti_cast<AZ::SerializeContext*>(context))
         {
             serializeContext->Class<TerrainGeneratorGradientComponent, AZ::Component>()
                 ->Version(1)
+                ->Field("Configuration", &TerrainGeneratorGradientComponent::m_configuration)
                 ;
 
             if (AZ::EditContext* editContext = serializeContext->GetEditContext())
@@ -217,26 +258,193 @@ namespace TerrainGenerator
 
         if (AZ::BehaviorContext* behaviorContext = azrtti_cast<AZ::BehaviorContext*>(context))
         {
+            /*
             behaviorContext->Class<TerrainGeneratorGradientComponent>("TerrainGeneratorGradient Component Group")
                 ->Attribute(AZ::Script::Attributes::Category, "TerrainGenerator Gem Group")
+                ;
+            */
+
+            behaviorContext->Constant("TerrainGeneratorGradientComponentTypeId", BehaviorConstant(TerrainGeneratorGradientComponentTypeId));
+
+            behaviorContext->Class<TerrainGeneratorGradientComponent>()->RequestBus("TerrainGeneratorGradientRequestBus");
+
+            behaviorContext->EBus<TerrainGeneratorGradientRequestBus>("TerrainGeneratorGradientRequestBus")
+                ->Attribute(AZ::Script::Attributes::Category, "Vegetation")
+                ->Event("GetRandomSeed", &TerrainGeneratorGradientRequestBus::Events::GetRandomSeed)
+                ->Event("SetRandomSeed", &TerrainGeneratorGradientRequestBus::Events::SetRandomSeed)
+                ->VirtualProperty("RandomSeed", "GetRandomSeed", "SetRandomSeed")
+                ->Event("GetFrequency", &TerrainGeneratorGradientRequestBus::Events::GetFrequency)
+                ->Event("SetFrequency", &TerrainGeneratorGradientRequestBus::Events::SetFrequency)
+                ->VirtualProperty("Frequency", "GetFrequency", "SetFrequency")
+                ->Event("GetInterpolation", &TerrainGeneratorGradientRequestBus::Events::GetInterpolation)
+                ->Event("SetInterpolation", &TerrainGeneratorGradientRequestBus::Events::SetInterpolation)
+                ->VirtualProperty("Interpolation", "GetInterpolation", "SetInterpolation")
+                ->Event("GetNoiseType", &TerrainGeneratorGradientRequestBus::Events::GetNoiseType)
+                ->Event("SetNoiseType", &TerrainGeneratorGradientRequestBus::Events::SetNoiseType)
+                ->VirtualProperty("NoiseType", "GetNoiseType", "SetNoiseType")
+                ->Event("GetOctaves", &TerrainGeneratorGradientRequestBus::Events::GetOctaves)
+                ->Event("SetOctaves", &TerrainGeneratorGradientRequestBus::Events::SetOctaves)
+                ->VirtualProperty("Octaves", "GetOctaves", "SetOctaves")
+                ->Event("GetLacunarity", &TerrainGeneratorGradientRequestBus::Events::GetLacunarity)
+                ->Event("SetLacunarity", &TerrainGeneratorGradientRequestBus::Events::SetLacunarity)
+                ->VirtualProperty("Lacunarity", "GetLacunarity", "SetLacunarity")
+                ->Event("GetGain", &TerrainGeneratorGradientRequestBus::Events::GetGain)
+                ->Event("SetGain", &TerrainGeneratorGradientRequestBus::Events::SetGain)
+                ->VirtualProperty("Gain", "GetGain", "SetGain")
+                ->Event("GetFractalType", &TerrainGeneratorGradientRequestBus::Events::GetFractalType)
+                ->Event("SetFractalType", &TerrainGeneratorGradientRequestBus::Events::SetFractalType)
+                ->VirtualProperty("FractalType", "GetFractalType", "SetFractalType")
                 ;
         }
     }
 
     void TerrainGeneratorGradientComponent::GetProvidedServices(AZ::ComponentDescriptor::DependencyArrayType& provided)
     {
-        provided.push_back(AZ_CRC_CE("TerrainGeneratorGradientComponentService"));
+        //provided.push_back(AZ_CRC_CE("TerrainGeneratorGradientComponentService"));
+        provided.push_back(AZ_CRC_CE("GradientService"));
     }
 
     void TerrainGeneratorGradientComponent::GetIncompatibleServices([[maybe_unused]] AZ::ComponentDescriptor::DependencyArrayType& incompatible)
     {
+        incompatible.push_back(AZ_CRC_CE("GradientService"));
     }
 
     void TerrainGeneratorGradientComponent::GetRequiredServices([[maybe_unused]] AZ::ComponentDescriptor::DependencyArrayType& required)
     {
+        required.push_back(AZ_CRC_CE("GradientTransformService"));
     }
 
-    void TerrainGeneratorGradientComponent::GetDependentServices([[maybe_unused]] AZ::ComponentDescriptor::DependencyArrayType& dependent)
+    void TerrainGeneratorGradientComponent::GetDependentServices([[maybe_unused]] AZ::ComponentDescriptor::DependencyArrayType& dependent) 
+    { 
+    }
+
+    TerrainGeneratorGradientComponent::TerrainGeneratorGradientComponent(const TerrainGeneratorGradientConfig& configuration)
+        : m_configuration(configuration)
     {
     }
+
+
+
+    bool TerrainGeneratorGradientComponent::ReadInConfig(const AZ::ComponentConfig* baseConfig)
+    {
+        if (auto config = azrtti_cast<const TerrainGeneratorGradientConfig*>(baseConfig))
+        {
+            m_configuration = *config;
+            return true;
+        }
+        return false;
+    }
+
+    bool TerrainGeneratorGradientComponent::WriteOutConfig(AZ::ComponentConfig* outBaseConfig) const
+    {
+        if (auto config = azrtti_cast<TerrainGeneratorGradientConfig*>(outBaseConfig))
+        {
+            *config = m_configuration;
+            return true;
+        }
+        return false;
+    }
+
+    void TerrainGeneratorGradientComponent::OnGradientTransformChanged(const GradientSignal::GradientTransform& newTransform)
+    {
+        AZStd::unique_lock lock(m_queryMutex);
+        m_gradientTransform = newTransform;
+    }
+
+    float TerrainGeneratorGradientComponent::GetValue(const GradientSignal::GradientSampleParams& sampleParams) const
+    {
+        AZ::Vector3 uvw;
+        bool wasPointRejected = false;
+
+        AZStd::shared_lock lock(m_queryMutex);
+
+        m_gradientTransform.TransformPositionToUVW(sampleParams.m_position, uvw, wasPointRejected);
+
+        // Generator returns a range between [-1, 1], map that to [0, 1]
+        return wasPointRejected ?
+            0.0f :
+            AZ::GetClamp((m_generator.GetNoise(uvw.GetX(), uvw.GetY(), uvw.GetZ()) + 1.0f) / 2.0f, 0.0f, 1.0f);
+    }
+
+    void TerrainGeneratorGradientComponent::GetValues(AZStd::span<const AZ::Vector3> positions, AZStd::span<float> outValues) const
+    {
+        if (positions.size() != outValues.size())
+        {
+            AZ_Assert(false, "input and output lists are different sizes (%zu vs %zu).", positions.size(), outValues.size());
+            return;
+        }
+
+        AZStd::shared_lock lock(m_queryMutex);
+        AZ::Vector3 uvw;
+
+        for (size_t index = 0; index < positions.size(); index++)
+        {
+            bool wasPointRejected = false;
+
+            m_gradientTransform.TransformPositionToUVW(positions[index], uvw, wasPointRejected);
+
+            // Generator returns a range between [-1, 1], map that to [0, 1]
+            outValues[index] = wasPointRejected ?
+                0.0f :
+                AZ::GetClamp((m_generator.GetNoise(uvw.GetX(), uvw.GetY(), uvw.GetZ()) + 1.0f) / 2.0f, 0.0f, 1.0f);
+        }
+    }
+
+    template <typename TValueType, TValueType TerrainGeneratorGradientConfig::*TConfigMember, void (FastNoise::*TMethod)(TValueType)>
+    void TerrainGeneratorGradientComponent::SetConfigValue(TValueType value)
+    {
+        // Only hold the lock while we're changing the data. Don't hold onto it during the OnCompositionChanged call, because that can
+        // execute an arbitrary amount of logic, including calls back to this component.
+        {
+            AZStd::unique_lock lock(m_queryMutex);
+
+            m_configuration.*TConfigMember = value;
+            ((&m_generator)->*TMethod)(value);
+        }
+
+        LmbrCentral::DependencyNotificationBus::Event(GetEntityId(), &LmbrCentral::DependencyNotificationBus::Events::OnCompositionChanged);
+    }
+
+    void TerrainGeneratorGradientComponent::SetRandomSeed(int seed)
+    {
+        // Some platforms require random seeds to be > 0.  Clamp to a positive range to ensure we're always safe.
+        SetConfigValue<int, &TerrainGeneratorGradientConfig::m_seed, &FastNoise::SetSeed>(AZ::GetMax(seed, 1));
+    }
+
+    void TerrainGeneratorGradientComponent::SetFrequency(float freq)
+    {
+        SetConfigValue<float, &TerrainGeneratorGradientConfig::m_frequency, &FastNoise::SetFrequency>(freq);
+    }
+
+    void TerrainGeneratorGradientComponent::SetInterpolation(FastNoise::Interp interp)
+    {
+        SetConfigValue<FastNoise::Interp, &TerrainGeneratorGradientConfig::m_interp, &FastNoise::SetInterp>(interp);
+    }
+
+    void TerrainGeneratorGradientComponent::SetNoiseType(FastNoise::NoiseType type)
+    {
+        SetConfigValue<FastNoise::NoiseType, &TerrainGeneratorGradientConfig::m_noiseType, &FastNoise::SetNoiseType>(type);
+    }
+
+    void TerrainGeneratorGradientComponent::SetOctaves(int octaves)
+    {
+        SetConfigValue<int, &TerrainGeneratorGradientConfig::m_octaves, &FastNoise::SetFractalOctaves>(octaves);
+    }
+
+    void TerrainGeneratorGradientComponent::SetLacunarity(float lacunarity)
+    {
+        SetConfigValue<float, &TerrainGeneratorGradientConfig::m_lacunarity, &FastNoise::SetFractalLacunarity>(lacunarity);
+    }
+
+    void TerrainGeneratorGradientComponent::SetGain(float gain)
+    {
+        SetConfigValue<float, &TerrainGeneratorGradientConfig::m_gain, &FastNoise::SetFractalGain>(gain);
+    }
+
+    void TerrainGeneratorGradientComponent::SetFractalType(FastNoise::FractalType type)
+    {
+        SetConfigValue<FastNoise::FractalType, &TerrainGeneratorGradientConfig::m_fractalType, &FastNoise::SetFractalType>(type);
+    }
+
+    
 } // namespace TerrainGenerator

@@ -13,7 +13,8 @@ namespace TerrainGenerator
         , public AZ::TickBus::Handler
     {
     public:
-        AZ_COMPONENT_DECL(TerrainGeneratorSystemComponent);
+        //AZ_COMPONENT_DECL(TerrainGeneratorSystemComponent);
+        AZ_COMPONENT(TerrainGeneratorSystemComponent, "{baf3bd34-3b40-4b6a-a0be-da719649e1ee}");
 
         static void Reflect(AZ::ReflectContext* context);
 

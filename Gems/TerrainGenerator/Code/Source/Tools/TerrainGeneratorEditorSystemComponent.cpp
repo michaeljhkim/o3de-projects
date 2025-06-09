@@ -1,13 +1,13 @@
 
 #include <AzCore/Serialization/SerializeContext.h>
+#include <AzCore/Serialization/EditContext.h>
 #include "TerrainGeneratorEditorSystemComponent.h"
 
 #include <TerrainGenerator/TerrainGeneratorTypeIds.h>
 
 namespace TerrainGenerator
 {
-    AZ_COMPONENT_IMPL(TerrainGeneratorEditorSystemComponent, "TerrainGeneratorEditorSystemComponent",
-        TerrainGeneratorEditorSystemComponentTypeId, BaseSystemComponent);
+    //AZ_COMPONENT_IMPL(TerrainGeneratorEditorSystemComponent, "TerrainGeneratorEditorSystemComponent", TerrainGeneratorEditorSystemComponentTypeId, BaseSystemComponent);
 
     void TerrainGeneratorEditorSystemComponent::Reflect(AZ::ReflectContext* context)
     {
@@ -15,11 +15,18 @@ namespace TerrainGenerator
         {
             serializeContext->Class<TerrainGeneratorEditorSystemComponent, TerrainGeneratorSystemComponent>()
                 ->Version(0);
+
+            if (AZ::EditContext* ec = serializeContext->GetEditContext())
+            {
+                ec->Class<TerrainGeneratorEditorSystemComponent>("TerrainGenerator Gradient", "System component for TerrainGenerator gradient gem")
+                    ->ClassElement(AZ::Edit::ClassElements::EditorData, "")
+                        ->Attribute(AZ::Edit::Attributes::AutoExpand, true)
+                    ;
+            }
         }
     }
 
     TerrainGeneratorEditorSystemComponent::TerrainGeneratorEditorSystemComponent() = default;
-
     TerrainGeneratorEditorSystemComponent::~TerrainGeneratorEditorSystemComponent() = default;
 
     void TerrainGeneratorEditorSystemComponent::GetProvidedServices(AZ::ComponentDescriptor::DependencyArrayType& provided)

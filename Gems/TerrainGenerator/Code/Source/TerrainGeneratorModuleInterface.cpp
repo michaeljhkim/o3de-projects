@@ -3,7 +3,6 @@
 #include <AzCore/Memory/Memory.h>
 
 #include <TerrainGenerator/TerrainGeneratorTypeIds.h>
-
 #include <Clients/TerrainGeneratorSystemComponent.h>
 
 namespace TerrainGenerator

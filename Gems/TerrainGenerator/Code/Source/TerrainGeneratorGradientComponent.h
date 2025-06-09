@@ -2,23 +2,23 @@
 #pragma once
 
 #include <AzCore/Component/Component.h>
-#include <TerrainGenerator/YurrgohtGradientInterface.h>
+#include <TerrainGenerator/TerrainGeneratorGradientInterface.h>
 #include <GradientSignal/Ebuses/GradientTransformRequestBus.h>
 
 namespace TerrainGenerator
 {
     /*
     * TODO: Register this component in your Gem's AZ::Module interface by inserting the following into the list of m_descriptors:
-    *       YurrgohtGradientComponent::CreateDescriptor(),
+    *       TerrainGeneratorGradientComponent::CreateDescriptor(),
     */
 
-    class YurrgohtGradientComponent
+    class TerrainGeneratorGradientComponent
         : public AZ::Component
-        , public YurrgohtGradientRequestBus::Handler
+        , public TerrainGeneratorGradientRequestBus::Handler
     {
     public:
-        //AZ_COMPONENT_DECL(YurrgohtGradientComponent);
-        AZ_COMPONENT(TerrainGenerator::YurrgohtGradientComponent, "{2a74a3d4-0ba3-4f3c-a12a-ded002e9e2a8}", AZ::Component);
+        //AZ_COMPONENT_DECL(TerrainGeneratorGradientComponent);
+        AZ_COMPONENT(TerrainGenerator::TerrainGeneratorGradientComponent, "{2a74a3d4-0ba3-4f3c-a12a-ded002e9e2a8}", AZ::Component);
 
         /*
         * Reflects component data into the reflection contexts, including the serialization, edit, and behavior contexts.

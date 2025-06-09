@@ -5,8 +5,8 @@ set(FILES
     Source/Clients/TerrainGeneratorSystemComponent.cpp
     Source/Clients/TerrainGeneratorSystemComponent.h
 
-    Source/YurrgohtGradientComponent.cpp
-    Source/YurrgohtGradientComponent.h
+    Source/TerrainGeneratorGradientComponent.cpp
+    Source/TerrainGeneratorGradientComponent.h
     
     External/FastNoise/FastNoise.cpp
     External/FastNoise/FastNoise.h

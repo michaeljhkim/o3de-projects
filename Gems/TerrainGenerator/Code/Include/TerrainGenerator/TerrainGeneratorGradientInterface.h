@@ -11,12 +11,12 @@
 
 namespace TerrainGenerator
 {
-    class YurrgohtGradientRequests
+    class TerrainGeneratorGradientRequests
         : public AZ::ComponentBus
     {
     public:
-        //AZ_RTTI(TerrainGenerator::YurrgohtGradientRequests, "{8E73FF49-B88A-4816-AEBE-51C14E0F3BCE}");
-        AZ_RTTI(TerrainGenerator::YurrgohtGradientRequests, "{2a74a3d4-0ba3-4f3c-a12a-ded002e9e2a8}");
+        //AZ_RTTI(TerrainGenerator::TerrainGeneratorGradientRequests, "{8E73FF49-B88A-4816-AEBE-51C14E0F3BCE}");
+        AZ_RTTI(TerrainGenerator::TerrainGeneratorGradientRequests, "{2a74a3d4-0ba3-4f3c-a12a-ded002e9e2a8}");
 
         // Put your public request methods here.
         
@@ -26,6 +26,6 @@ namespace TerrainGenerator
         
     };
 
-    using YurrgohtGradientRequestBus = AZ::EBus<YurrgohtGradientRequests>;
+    using TerrainGeneratorGradientRequestBus = AZ::EBus<TerrainGeneratorGradientRequests>;
 
 } // namespace TerrainGenerator

@@ -3,7 +3,7 @@
 #include <AzCore/Module/Module.h>
 #include <AzCore/RTTI/RTTIMacros.h>
 #include <AzCore/RTTI/TypeInfoSimple.h>
-#include <YurrgohtGradientComponent.h>
+#include <TerrainGeneratorGradientComponent.h>
 
 namespace TerrainGenerator
 {

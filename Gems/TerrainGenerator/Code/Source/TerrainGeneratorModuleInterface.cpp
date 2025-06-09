@@ -21,7 +21,7 @@ namespace TerrainGenerator
         // This happens through the [MyComponent]::Reflect() function.
         m_descriptors.insert(m_descriptors.end(), {
             TerrainGeneratorSystemComponent::CreateDescriptor(),
-            YurrgohtGradientComponent::CreateDescriptor()
+            TerrainGeneratorGradientComponent::CreateDescriptor()
             });
     }
 

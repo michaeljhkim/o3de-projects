@@ -45,6 +45,7 @@ ly_add_target(
     INCLUDE_DIRECTORIES
         PRIVATE
             Include
+            .       # To give acess to External/FastNoise
             Source
     BUILD_DEPENDENCIES
         PUBLIC

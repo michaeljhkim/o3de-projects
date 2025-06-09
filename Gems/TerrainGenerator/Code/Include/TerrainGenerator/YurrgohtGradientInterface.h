@@ -2,6 +2,12 @@
 #pragma once
 
 #include <AzCore/Component/ComponentBus.h>
+#include <External/FastNoise/FastNoise.h>
+
+/*
+- This is the request bus interface
+- What allows the Terrain Spawner to see this as a valid gradient component
+*/
 
 namespace TerrainGenerator
 {

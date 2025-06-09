@@ -7,4 +7,7 @@ set(FILES
 
     Source/YurrgohtGradientComponent.cpp
     Source/YurrgohtGradientComponent.h
+    
+    External/FastNoise/FastNoise.cpp
+    External/FastNoise/FastNoise.h
 )

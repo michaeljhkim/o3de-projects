@@ -1,22 +1,74 @@
-
 #pragma once
 
 #include <AzCore/Component/Component.h>
-#include <TerrainGenerator/TerrainGeneratorGradientInterface.h>
+#include <AzCore/Asset/AssetCommon.h>
+#include <AzCore/RTTI/TypeInfo.h>
+#include <AzCore/std/parallel/shared_mutex.h>
+#include <GradientSignal/Ebuses/GradientRequestBus.h>
 #include <GradientSignal/Ebuses/GradientTransformRequestBus.h>
+#include <TerrainGenerator/TerrainGeneratorGradientInterface.h>
+
+#include <External/FastNoise/FastNoise.h>
+
+namespace AZ
+{
+    AZ_TYPE_INFO_SPECIALIZE(FastNoise::Interp, "{9bb11a1f-2d8b-40c5-8bd9-ecb8bee70dcf}");
+    AZ_TYPE_INFO_SPECIALIZE(FastNoise::NoiseType, "{215ce177-1817-446e-a9b1-bd176505052e}");
+    AZ_TYPE_INFO_SPECIALIZE(FastNoise::FractalType, "{ea959923-ed2e-4ccd-8c99-331c0c13cbd4}");
+    AZ_TYPE_INFO_SPECIALIZE(FastNoise::CellularDistanceFunction, "{e0c14b5e-416a-44a7-a8d0-9319f4fd41b4}");
+    AZ_TYPE_INFO_SPECIALIZE(FastNoise::CellularReturnType, "{1e007e6a-8ee0-4154-85fb-6f0855720730}");
+}
+
+namespace LmbrCentral
+{
+    template<typename, typename>
+    class EditorWrappedComponentBase;
+}
 
 namespace TerrainGenerator
 {
-    /*
-    * TODO: Register this component in your Gem's AZ::Module interface by inserting the following into the list of m_descriptors:
-    *       TerrainGeneratorGradientComponent::CreateDescriptor(),
-    */
+    class TerrainGeneratorGradientConfig
+        : public AZ::ComponentConfig
+    {
+    public:
+        AZ_CLASS_ALLOCATOR(TerrainGeneratorGradientConfig, AZ::SystemAllocator);
+        AZ_RTTI(TerrainGeneratorGradientConfig, "{93dc5b0b-5777-4a88-a088-944311ac1d5a}", AZ::ComponentConfig);
+        static void Reflect(AZ::ReflectContext* context);
+
+        AZ::u32 GetCellularParameterVisibility() const;
+        AZ::u32 GetFractalParameterVisbility() const;
+        AZ::u32 GetFrequencyParameterVisbility() const;
+        AZ::u32 GetInterpParameterVisibility() const;
+
+        bool operator==(const TerrainGeneratorGradientConfig& rhs) const;
+
+        int m_seed = 1;
+        float m_frequency = 1.f;
+        FastNoise::Interp m_interp = FastNoise::Interp::Quintic;
+        FastNoise::NoiseType m_noiseType = FastNoise::NoiseType::PerlinFractal;
+
+        int m_octaves = 4;
+        float m_lacunarity = 2.f;
+        float m_gain = 0.5;
+        FastNoise::FractalType m_fractalType = FastNoise::FractalType::FBM;
+
+        FastNoise::CellularDistanceFunction m_cellularDistanceFunction = FastNoise::CellularDistanceFunction::Euclidean;
+        FastNoise::CellularReturnType m_cellularReturnType = FastNoise::CellularReturnType::CellValue;
+        float m_cellularJitter = 0.45f;
+    };
+
+
 
     class TerrainGeneratorGradientComponent
         : public AZ::Component
         , public TerrainGeneratorGradientRequestBus::Handler
+        , private GradientSignal::GradientRequestBus::Handler
+        , private GradientSignal::GradientTransformNotificationBus::Handler
     {
     public:
+        //friend class EditorFastNoiseGradientComponent;
+        //template<typename, typename> friend class LmbrCentral::EditorWrappedComponentBase;
+
         //AZ_COMPONENT_DECL(TerrainGeneratorGradientComponent);
         AZ_COMPONENT(TerrainGenerator::TerrainGeneratorGradientComponent, "{2a74a3d4-0ba3-4f3c-a12a-ded002e9e2a8}", AZ::Component);
 
@@ -60,6 +112,17 @@ namespace TerrainGenerator
         */
         static void GetDependentServices(AZ::ComponentDescriptor::DependencyArrayType& dependent);
 
+        TerrainGeneratorGradientComponent(const TerrainGeneratorGradientConfig& configuration);
+        TerrainGeneratorGradientComponent() = default;
+
+        // AZ::Component overrides...
+        bool ReadInConfig(const AZ::ComponentConfig* baseConfig) override;
+        bool WriteOutConfig(AZ::ComponentConfig* outBaseConfig) const override;
+
+        // GradientRequestBus overrides...
+        float GetValue(const GradientSignal::GradientSampleParams& sampleParams) const override;
+        void GetValues(AZStd::span<const AZ::Vector3> positions, AZStd::span<float> outValues) const override;
+
     protected:
         /*
         * Puts this component into an active state.
@@ -83,5 +146,42 @@ namespace TerrainGenerator
         * Deactivate() implementation can handle this scenario.
         */
         void Deactivate() override;
+
+        // Copied from the FastNoise
+        TerrainGeneratorGradientConfig m_configuration;
+        FastNoise m_generator;
+        GradientSignal::GradientTransform m_gradientTransform;
+        mutable AZStd::shared_mutex m_queryMutex;
+
+        // GradientTransformNotificationBus overrides...
+        void OnGradientTransformChanged(const GradientSignal::GradientTransform& newTransform) override;
+
+        // FastNoiseGradientRequest overrides...
+        int GetRandomSeed() const override;
+        void SetRandomSeed(int seed) override;
+
+        float GetFrequency() const override;
+        void SetFrequency(float freq) override;
+
+        FastNoise::Interp GetInterpolation() const override;
+        void SetInterpolation(FastNoise::Interp interp) override;
+
+        FastNoise::NoiseType GetNoiseType() const override;
+        void SetNoiseType(FastNoise::NoiseType type) override;
+
+        int GetOctaves() const override;
+        void SetOctaves(int octaves) override;
+
+        float GetLacunarity() const override;
+        void SetLacunarity(float lacunarity) override;
+
+        float GetGain() const override;
+        void SetGain(float gain) override;
+
+        FastNoise::FractalType GetFractalType() const override;
+        void SetFractalType(FastNoise::FractalType type) override;
+
+        template <typename TValueType, TValueType TerrainGeneratorGradientConfig::*TConfigMember, void (FastNoise::*TMethod)(TValueType)>
+        void SetConfigValue(TValueType value);
     };
 } // namespace TerrainGenerator

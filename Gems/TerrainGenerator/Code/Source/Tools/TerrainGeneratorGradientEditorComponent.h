@@ -24,7 +24,7 @@ namespace TerrainGenerator
         AZ::u32 ConfigurationChanged() override;
 
         static constexpr const char* const s_categoryName = "Gradients";
-        static constexpr const char* const s_componentName = "TerrainGenerator Gradient";
+        static constexpr const char* const s_componentName = "Terrain Generator Gradient";
         static constexpr const char* const s_componentDescription = "Generates gradient values using FastNoise a noise generation library with a collection of realtime noise algorithms";
         static constexpr const char* const s_icon = "Editor/Icons/Components/Gradient.svg";
         static constexpr const char* const s_viewportIcon = "Editor/Icons/Components/Viewport/Gradient.svg";

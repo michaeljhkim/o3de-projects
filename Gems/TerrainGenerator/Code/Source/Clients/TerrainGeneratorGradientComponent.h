@@ -157,7 +157,7 @@ namespace TerrainGenerator
         void OnGradientTransformChanged(const GradientSignal::GradientTransform& newTransform) override;
 
         // FastNoiseGradientRequest overrides...
-        // all Get functions - decided to move definitions here for simplicity 
+        // Get functions - moved protected definitions to header for simplicity 
         int GetRandomSeed() const { return m_configuration.m_seed; }
         float GetFrequency() const { return m_configuration.m_frequency; }
         FastNoise::Interp GetInterpolation() const { return m_configuration.m_interp; }
@@ -167,6 +167,7 @@ namespace TerrainGenerator
         float GetGain() const { return m_configuration.m_gain; }
         FastNoise::FractalType GetFractalType() const { return m_configuration.m_fractalType; }
 
+        // Set functions - defined in cpp
         void SetRandomSeed(int seed) override;
         void SetFrequency(float freq) override;
         void SetInterpolation(FastNoise::Interp interp) override;

@@ -10,6 +10,18 @@
 //#include <External/FastNoise/FastNoise.h>
 //#include <GradientSignal/Ebuses/GradientTransformRequestBus.h>
 
+/*
+https://www.youtube.com/watch?v=tqhxkLk8NF0&t=63s&ab_channel=rzDmyth
+
+- From what I can tell, the GetValues(positions, outValues) function is where the noise is calculated and applied 
+- 'Terrain Height Gradient List' provides a list of world positions that it needs to calculate noise for
+- GetValues() takes the positions, pops them into the fast noise algorithm, then returns the values as outputs
+
+- This is most ideal for me since I would not even need to determine the positions that need to be calculated
+- I just need to create the algorithm that is to be applied to each position
+
+*/
+
 namespace TerrainGenerator
 {
     AZ::u32 TerrainGeneratorGradientConfig::GetCellularParameterVisibility() const
@@ -197,7 +209,10 @@ namespace TerrainGenerator
 ************************************************************************************************************************************
 */
 
-    //AZ_COMPONENT_IMPL(TerrainGeneratorGradientComponent, "TerrainGeneratorGradientComponent", "{862772FD-B012-4F54-923F-B05960A88B1B}");
+    TerrainGeneratorGradientComponent::TerrainGeneratorGradientComponent(const TerrainGeneratorGradientConfig& configuration)
+        : m_configuration(configuration)
+    {
+    }
 
     void TerrainGeneratorGradientComponent::Activate()
     {
@@ -263,9 +278,7 @@ namespace TerrainGenerator
                 ->Attribute(AZ::Script::Attributes::Category, "TerrainGenerator Gem Group")
                 ;
             */
-
             behaviorContext->Constant("TerrainGeneratorGradientComponentTypeId", BehaviorConstant(TerrainGeneratorGradientComponentTypeId));
-
             behaviorContext->Class<TerrainGeneratorGradientComponent>()->RequestBus("TerrainGeneratorGradientRequestBus");
 
             behaviorContext->EBus<TerrainGeneratorGradientRequestBus>("TerrainGeneratorGradientRequestBus")
@@ -318,11 +331,6 @@ namespace TerrainGenerator
     { 
     }
 
-    TerrainGeneratorGradientComponent::TerrainGeneratorGradientComponent(const TerrainGeneratorGradientConfig& configuration)
-        : m_configuration(configuration)
-    {
-    }
-
 
 
     bool TerrainGeneratorGradientComponent::ReadInConfig(const AZ::ComponentConfig* baseConfig)
@@ -357,7 +365,6 @@ namespace TerrainGenerator
         bool wasPointRejected = false;
 
         AZStd::shared_lock lock(m_queryMutex);
-
         m_gradientTransform.TransformPositionToUVW(sampleParams.m_position, uvw, wasPointRejected);
 
         // Generator returns a range between [-1, 1], map that to [0, 1]
@@ -366,6 +373,7 @@ namespace TerrainGenerator
             AZ::GetClamp((m_generator.GetNoise(uvw.GetX(), uvw.GetY(), uvw.GetZ()) + 1.0f) / 2.0f, 0.0f, 1.0f);
     }
 
+    // I think this is what the Terrain Gradient list uses to get the new coordinates
     void TerrainGeneratorGradientComponent::GetValues(AZStd::span<const AZ::Vector3> positions, AZStd::span<float> outValues) const
     {
         if (positions.size() != outValues.size())
@@ -380,7 +388,6 @@ namespace TerrainGenerator
         for (size_t index = 0; index < positions.size(); index++)
         {
             bool wasPointRejected = false;
-
             m_gradientTransform.TransformPositionToUVW(positions[index], uvw, wasPointRejected);
 
             // Generator returns a range between [-1, 1], map that to [0, 1]

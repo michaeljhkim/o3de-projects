@@ -15,16 +15,6 @@ namespace TerrainGenerator
             serializeContext->Class<TerrainGeneratorSystemComponent, AZ::Component>()
                 ->Version(0)
                 ;
-            
-            /*
-            if (AZ::EditContext* ec = serializeContext->GetEditContext())
-            {
-                ec->Class<TerrainGeneratorSystemComponent>("TerrainGenerator Gradient", "System component for TerrainGenerator gradient gem")
-                    ->ClassElement(AZ::Edit::ClassElements::EditorData, "")
-                        ->Attribute(AZ::Edit::Attributes::AutoExpand, true)
-                    ;
-            }
-            */
         }
     }
 

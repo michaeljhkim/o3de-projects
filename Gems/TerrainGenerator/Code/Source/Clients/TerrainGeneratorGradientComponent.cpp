@@ -26,17 +26,24 @@ namespace TerrainGenerator
 {
     AZ::u32 TerrainGeneratorGradientConfig::GetCellularParameterVisibility() const
     {
-        return m_noiseType == FastNoise::NoiseType::Cellular ? AZ::Edit::PropertyVisibility::Show : AZ::Edit::PropertyVisibility::Hide;
+        return m_noiseType == FastNoiseLite::NoiseType::NoiseType_Cellular ? AZ::Edit::PropertyVisibility::Show : AZ::Edit::PropertyVisibility::Hide;
     }
 
     AZ::u32 TerrainGeneratorGradientConfig::GetFractalParameterVisbility() const
     {
-        switch (m_noiseType)
+        switch (m_fractalType)
         {
-        case FastNoise::NoiseType::CubicFractal:
-        case FastNoise::NoiseType::PerlinFractal:
-        case FastNoise::NoiseType::SimplexFractal:
-        case FastNoise::NoiseType::ValueFractal:
+        case FastNoiseLite::FractalType::FractalType_FBm:
+        case FastNoiseLite::FractalType::FractalType_Ridged:
+        case FastNoiseLite::FractalType::FractalType_PingPong:
+        case FastNoiseLite::FractalType::FractalType_DomainWarpProgressive:
+        case FastNoiseLite::FractalType::FractalType_DomainWarpIndependent:
+        /*
+        case FastNoiseLite::NoiseType::NoiseType_Perlin:
+        case FastNoiseLite::NoiseType::NoiseType_OpenSimplex2:
+        case FastNoiseLite::NoiseType::NoiseType_OpenSimplex2S:
+        case FastNoiseLite::NoiseType::NoiseType_Value:
+        */
             return AZ::Edit::PropertyVisibility::Show;
         }
         return AZ::Edit::PropertyVisibility::Hide;
@@ -44,20 +51,8 @@ namespace TerrainGenerator
 
     AZ::u32 TerrainGeneratorGradientConfig::GetFrequencyParameterVisbility() const
     {
-        return m_noiseType != FastNoise::NoiseType::WhiteNoise ? AZ::Edit::PropertyVisibility::Show : AZ::Edit::PropertyVisibility::Hide;
-    }
-
-    AZ::u32 TerrainGeneratorGradientConfig::GetInterpParameterVisibility() const
-    {
-        switch (m_noiseType)
-        {
-        case FastNoise::NoiseType::Value:
-        case FastNoise::NoiseType::ValueFractal:
-        case FastNoise::NoiseType::Perlin:
-        case FastNoise::NoiseType::PerlinFractal:
-            return AZ::Edit::PropertyVisibility::Show;
-        }
-        return AZ::Edit::PropertyVisibility::Hide;
+        //return m_noiseType != FastNoiseLite::NoiseType::WhiteNoise ? AZ::Edit::PropertyVisibility::Show : AZ::Edit::PropertyVisibility::Hide;
+        return AZ::Edit::PropertyVisibility::Show;
     }
 
     bool TerrainGeneratorGradientConfig::operator==(const TerrainGeneratorGradientConfig& rhs) const
@@ -68,7 +63,6 @@ namespace TerrainGenerator
         && (m_fractalType == rhs.m_fractalType)
         && (m_frequency == rhs.m_frequency)
         && (m_gain == rhs.m_gain)
-        && (m_interp == rhs.m_interp)
         && (m_lacunarity == rhs.m_lacunarity)
         && (m_noiseType == rhs.m_noiseType)
         && (m_octaves == rhs.m_octaves)
@@ -87,7 +81,6 @@ namespace TerrainGenerator
                 ->Field("Octaves", &TerrainGeneratorGradientConfig::m_octaves)
                 ->Field("Lacunarity", &TerrainGeneratorGradientConfig::m_lacunarity)
                 ->Field("Gain", &TerrainGeneratorGradientConfig::m_gain)
-                ->Field("Interp", &TerrainGeneratorGradientConfig::m_interp)
                 ->Field("FractalType", &TerrainGeneratorGradientConfig::m_fractalType)
                 ->Field("CellularDistanceFunction", &TerrainGeneratorGradientConfig::m_cellularDistanceFunction)
                 ->Field("CellularReturnType", &TerrainGeneratorGradientConfig::m_cellularReturnType)
@@ -97,7 +90,7 @@ namespace TerrainGenerator
             if (auto editContext = serializeContext->GetEditContext())
             {
                 editContext->Class<TerrainGeneratorGradientConfig>(
-                    "FastNoise Gradient", "")
+                    "FastNoiseLite Gradient", "")
                     ->ClassElement(AZ::Edit::ClassElements::EditorData, "")
                     ->Attribute(AZ::Edit::Attributes::Visibility, AZ::Edit::PropertyVisibility::ShowChildrenOnly)
                     ->Attribute(AZ::Edit::Attributes::AutoExpand, true)
@@ -107,19 +100,17 @@ namespace TerrainGenerator
                     ->Attribute(AZ::Edit::Attributes::SoftMin, 1)
                     ->Attribute(AZ::Edit::Attributes::SoftMax, 100)
                     ->Attribute(AZ::Edit::Attributes::Step, 10)
+
                     ->DataElement(AZ::Edit::UIHandlers::ComboBox, &TerrainGeneratorGradientConfig::m_noiseType, "Noise Type", "Sets the type of noise generator used")
                     ->Attribute(AZ::Edit::Attributes::Min, std::numeric_limits<int>::min())
                     ->Attribute(AZ::Edit::Attributes::Max, std::numeric_limits<int>::max())
-                    ->EnumAttribute(FastNoise::NoiseType::Value, "Value")
-                    ->EnumAttribute(FastNoise::NoiseType::ValueFractal, "Value Fractal")
-                    ->EnumAttribute(FastNoise::NoiseType::Perlin, "Perlin")
-                    ->EnumAttribute(FastNoise::NoiseType::PerlinFractal, "Perlin Fractal")
-                    ->EnumAttribute(FastNoise::NoiseType::Simplex, "Simplex")
-                    ->EnumAttribute(FastNoise::NoiseType::SimplexFractal, "Simplex Fractal")
-                    ->EnumAttribute(FastNoise::NoiseType::Cellular, "Cellular")
-                    ->EnumAttribute(FastNoise::NoiseType::WhiteNoise, "White Noise")
-                    ->EnumAttribute(FastNoise::NoiseType::Cubic, "Cubic")
-                    ->EnumAttribute(FastNoise::NoiseType::CubicFractal, "Cubic Fractal")
+                    ->EnumAttribute(FastNoiseLite::NoiseType::NoiseType_OpenSimplex2, "NoiseType_OpenSimplex2")
+                    ->EnumAttribute(FastNoiseLite::NoiseType::NoiseType_OpenSimplex2S, "NoiseType_OpenSimplex2S")
+                    ->EnumAttribute(FastNoiseLite::NoiseType::NoiseType_Cellular, "NoiseType_Cellular")
+                    ->EnumAttribute(FastNoiseLite::NoiseType::NoiseType_Perlin, "NoiseType_Perlin")
+                    ->EnumAttribute(FastNoiseLite::NoiseType::NoiseType_ValueCubic, "NoiseType_ValueCubic")
+                    ->EnumAttribute(FastNoiseLite::NoiseType::NoiseType_Value, "NoiseType_Value")
+
                     ->DataElement(AZ::Edit::UIHandlers::Slider, &TerrainGeneratorGradientConfig::m_frequency, "Frequency", "Higher frequencies are more coarse")
                     ->Attribute(AZ::Edit::Attributes::DisplayDecimals, 4)
                     ->Attribute(AZ::Edit::Attributes::Min, 0.0001f)
@@ -127,52 +118,54 @@ namespace TerrainGenerator
                     ->Attribute(AZ::Edit::Attributes::SoftMax, 8.0f)
                     ->Attribute(AZ::Edit::Attributes::SliderCurveMidpoint, 0.25) // Give the frequency a non-linear scale slider with higher precision at the low end
                     ->Attribute(AZ::Edit::Attributes::Visibility, &TerrainGeneratorGradientConfig::GetFrequencyParameterVisbility)
+
+                    ->DataElement(AZ::Edit::UIHandlers::ComboBox, &TerrainGeneratorGradientConfig::m_fractalType, "Fractal Type", "Sets how the fractal is combined")
+                    ->EnumAttribute(FastNoiseLite::FractalType::FractalType_None, "FractalType_None")
+                    ->EnumAttribute(FastNoiseLite::FractalType::FractalType_FBm, "FractalType_FBm")
+                    ->EnumAttribute(FastNoiseLite::FractalType::FractalType_Ridged, "FractalType_Ridged")
+                    ->EnumAttribute(FastNoiseLite::FractalType::FractalType_PingPong, "FractalType_PingPong")
+                    ->EnumAttribute(FastNoiseLite::FractalType::FractalType_DomainWarpProgressive, "FractalType_DomainWarpProgressive")
+                    ->EnumAttribute(FastNoiseLite::FractalType::FractalType_DomainWarpIndependent, "FractalType_DomainWarpIndependent")
+
                     ->DataElement(AZ::Edit::UIHandlers::Slider, &TerrainGeneratorGradientConfig::m_octaves, "Octaves", "Number of recursions in the pattern generation, higher octaves refine the pattern")
                     ->Attribute(AZ::Edit::Attributes::Min, 0)
                     ->Attribute(AZ::Edit::Attributes::Max, 20)
                     ->Attribute(AZ::Edit::Attributes::SoftMax, 8)
                     ->Attribute(AZ::Edit::Attributes::Visibility, &TerrainGeneratorGradientConfig::GetFractalParameterVisbility)
+
                     ->DataElement(AZ::Edit::UIHandlers::Slider, &TerrainGeneratorGradientConfig::m_lacunarity, "Lacunarity", "The frequency multiplier between each octave")
                     ->Attribute(AZ::Edit::Attributes::Min, 0.f)
                     ->Attribute(AZ::Edit::Attributes::Max, std::numeric_limits<float>::max())
                     ->Attribute(AZ::Edit::Attributes::SoftMax, 5.f)
                     ->Attribute(AZ::Edit::Attributes::Visibility, &TerrainGeneratorGradientConfig::GetFractalParameterVisbility)
+
                     ->DataElement(AZ::Edit::UIHandlers::Slider, &TerrainGeneratorGradientConfig::m_gain, "Gain", "The relative strength of noise from each layer when compared to the last")
                     ->Attribute(AZ::Edit::Attributes::Min, 0.f)
                     ->Attribute(AZ::Edit::Attributes::Max, std::numeric_limits<float>::max())
                     ->Attribute(AZ::Edit::Attributes::SoftMax, 5.f)
                     ->Attribute(AZ::Edit::Attributes::Visibility, &TerrainGeneratorGradientConfig::GetFractalParameterVisbility)
+
                     ->DataElement(AZ::Edit::UIHandlers::ComboBox, &TerrainGeneratorGradientConfig::m_cellularDistanceFunction, "Distance Function", "Sets the distance function used to calculate the cell for a given point")
                     ->Attribute(AZ::Edit::Attributes::Visibility, &TerrainGeneratorGradientConfig::GetCellularParameterVisibility)
-                    ->EnumAttribute(FastNoise::CellularDistanceFunction::Euclidean, "Euclidean")
-                    ->EnumAttribute(FastNoise::CellularDistanceFunction::Manhattan, "Manhattan")
-                    ->EnumAttribute(FastNoise::CellularDistanceFunction::Natural, "Natural")
+                    ->EnumAttribute(FastNoiseLite::CellularDistanceFunction::CellularDistanceFunction_Euclidean, "CellularDistanceFunction_Euclidean")
+                    ->EnumAttribute(FastNoiseLite::CellularDistanceFunction::CellularDistanceFunction_EuclideanSq, "CellularDistanceFunction_EuclideanSq")
+                    ->EnumAttribute(FastNoiseLite::CellularDistanceFunction::CellularDistanceFunction_Manhattan, "CellularDistanceFunction_Manhattan")
+                    ->EnumAttribute(FastNoiseLite::CellularDistanceFunction::CellularDistanceFunction_Hybrid, "CellularDistanceFunction_Hybrid")
+
                     ->DataElement(AZ::Edit::UIHandlers::ComboBox, &TerrainGeneratorGradientConfig::m_cellularReturnType, "Return Type", "Alters the value type the cellular function returns from its calculation")
                     ->Attribute(AZ::Edit::Attributes::Visibility, &TerrainGeneratorGradientConfig::GetCellularParameterVisibility)
-                    ->EnumAttribute(FastNoise::CellularReturnType::CellValue, "CellValue")
-                    ->EnumAttribute(FastNoise::CellularReturnType::Distance, "Distance")
-                    ->EnumAttribute(FastNoise::CellularReturnType::Distance2, "Distance2")
-                    ->EnumAttribute(FastNoise::CellularReturnType::Distance2Add, "Distance2Add")
-                    ->EnumAttribute(FastNoise::CellularReturnType::Distance2Sub, "Distance2Sub")
-                    ->EnumAttribute(FastNoise::CellularReturnType::Distance2Mul, "Distance2Mul")
-                    ->EnumAttribute(FastNoise::CellularReturnType::Distance2Div, "Distance2Div")
+                    ->EnumAttribute(FastNoiseLite::CellularReturnType::CellularReturnType_CellValue, "CellValue")
+                    ->EnumAttribute(FastNoiseLite::CellularReturnType::CellularReturnType_Distance, "CellularReturnType_Distance")
+                    ->EnumAttribute(FastNoiseLite::CellularReturnType::CellularReturnType_Distance2, "CellularReturnType_Distance2")
+                    ->EnumAttribute(FastNoiseLite::CellularReturnType::CellularReturnType_Distance2Add, "CellularReturnType_Distance2Add")
+                    ->EnumAttribute(FastNoiseLite::CellularReturnType::CellularReturnType_Distance2Sub, "CellularReturnType_Distance2Subs")
+                    ->EnumAttribute(FastNoiseLite::CellularReturnType::CellularReturnType_Distance2Mul, "CellularReturnType_Distance2Mul")
+                    ->EnumAttribute(FastNoiseLite::CellularReturnType::CellularReturnType_Distance2Div, "CellularReturnType_Distance2Div")
+
                     ->DataElement(AZ::Edit::UIHandlers::Slider, &TerrainGeneratorGradientConfig::m_cellularJitter, "Jitter", "Sets the maximum distance a cellular point can move from its grid position")
                     ->Attribute(AZ::Edit::Attributes::Min, 0.f)
                     ->Attribute(AZ::Edit::Attributes::Max, std::numeric_limits<float>::max())
                     ->Attribute(AZ::Edit::Attributes::SoftMax, 10.f)
-                    ->Attribute(AZ::Edit::Attributes::Visibility, &TerrainGeneratorGradientConfig::GetCellularParameterVisibility)
-                    ->ClassElement(AZ::Edit::ClassElements::Group, "FastNoise Advanced Settings")
-                    ->Attribute(AZ::Edit::Attributes::AutoExpand, false)
-                    ->DataElement(AZ::Edit::UIHandlers::ComboBox, &TerrainGeneratorGradientConfig::m_interp, "Interpolation", "Changes the interpolation method used to smooth between noise values")
-                    ->Attribute(AZ::Edit::Attributes::Visibility, &TerrainGeneratorGradientConfig::GetInterpParameterVisibility)
-                    ->EnumAttribute(FastNoise::Interp::Linear, "Linear")
-                    ->EnumAttribute(FastNoise::Interp::Hermite, "Hermite")
-                    ->EnumAttribute(FastNoise::Interp::Quintic, "Quintic")
-                    ->DataElement(AZ::Edit::UIHandlers::ComboBox, &TerrainGeneratorGradientConfig::m_fractalType, "Fractal Type", "Sets how the fractal is combined")
-                    ->Attribute(AZ::Edit::Attributes::Visibility, &TerrainGeneratorGradientConfig::GetFractalParameterVisbility)
-                    ->EnumAttribute(FastNoise::FractalType::FBM, "FBM")
-                    ->EnumAttribute(FastNoise::FractalType::Billow, "Billow")
-                    ->EnumAttribute(FastNoise::FractalType::RigidMulti, "Rigid Multi")
                     ;
             }
         }
@@ -189,13 +182,10 @@ namespace TerrainGenerator
                 ->Property("gain", BehaviorValueProperty(&TerrainGeneratorGradientConfig::m_gain))
                 ->Property("noiseType",
                     [](TerrainGeneratorGradientConfig* config) { return (int&)(config->m_noiseType); },
-                    [](TerrainGeneratorGradientConfig* config, const int& i) { config->m_noiseType = (FastNoise::NoiseType)i; })
-                ->Property("interpolation",
-                    [](TerrainGeneratorGradientConfig* config) { return (int&)(config->m_interp); },
-                    [](TerrainGeneratorGradientConfig* config, const int& i) { config->m_interp = (FastNoise::Interp)i; })
+                    [](TerrainGeneratorGradientConfig* config, const int& i) { config->m_noiseType = (FastNoiseLite::NoiseType)i; })
                 ->Property("fractalType",
                     [](TerrainGeneratorGradientConfig* config) { return (int&)(config->m_fractalType); },
-                    [](TerrainGeneratorGradientConfig* config, const int& i) { config->m_fractalType = (FastNoise::FractalType)i; })
+                    [](TerrainGeneratorGradientConfig* config, const int& i) { config->m_fractalType = (FastNoiseLite::FractalType)i; })
                 ;
         }
     }
@@ -222,7 +212,6 @@ namespace TerrainGenerator
         // Some platforms require random seeds to be > 0.  Clamp to a positive range to ensure we're always safe.
         m_generator.SetSeed(AZ::GetMax(m_configuration.m_seed, 1));
         m_generator.SetFrequency(m_configuration.m_frequency);
-        m_generator.SetInterp(m_configuration.m_interp);
         m_generator.SetNoiseType(m_configuration.m_noiseType);
 
         m_generator.SetFractalOctaves(m_configuration.m_octaves);
@@ -289,9 +278,6 @@ namespace TerrainGenerator
                 ->Event("GetFrequency", &TerrainGeneratorGradientRequestBus::Events::GetFrequency)
                 ->Event("SetFrequency", &TerrainGeneratorGradientRequestBus::Events::SetFrequency)
                 ->VirtualProperty("Frequency", "GetFrequency", "SetFrequency")
-                ->Event("GetInterpolation", &TerrainGeneratorGradientRequestBus::Events::GetInterpolation)
-                ->Event("SetInterpolation", &TerrainGeneratorGradientRequestBus::Events::SetInterpolation)
-                ->VirtualProperty("Interpolation", "GetInterpolation", "SetInterpolation")
                 ->Event("GetNoiseType", &TerrainGeneratorGradientRequestBus::Events::GetNoiseType)
                 ->Event("SetNoiseType", &TerrainGeneratorGradientRequestBus::Events::SetNoiseType)
                 ->VirtualProperty("NoiseType", "GetNoiseType", "SetNoiseType")
@@ -397,7 +383,7 @@ namespace TerrainGenerator
         }
     }
 
-    template <typename TValueType, TValueType TerrainGeneratorGradientConfig::*TConfigMember, void (FastNoise::*TMethod)(TValueType)>
+    template <typename TValueType, TValueType TerrainGeneratorGradientConfig::*TConfigMember, void (FastNoiseLite::*TMethod)(TValueType)>
     void TerrainGeneratorGradientComponent::SetConfigValue(TValueType value)
     {
         // Only hold the lock while we're changing the data. Don't hold onto it during the OnCompositionChanged call, because that can
@@ -415,42 +401,37 @@ namespace TerrainGenerator
     void TerrainGeneratorGradientComponent::SetRandomSeed(int seed)
     {
         // Some platforms require random seeds to be > 0.  Clamp to a positive range to ensure we're always safe.
-        SetConfigValue<int, &TerrainGeneratorGradientConfig::m_seed, &FastNoise::SetSeed>(AZ::GetMax(seed, 1));
+        SetConfigValue<int, &TerrainGeneratorGradientConfig::m_seed, &FastNoiseLite::SetSeed>(AZ::GetMax(seed, 1));
     }
 
     void TerrainGeneratorGradientComponent::SetFrequency(float freq)
     {
-        SetConfigValue<float, &TerrainGeneratorGradientConfig::m_frequency, &FastNoise::SetFrequency>(freq);
+        SetConfigValue<float, &TerrainGeneratorGradientConfig::m_frequency, &FastNoiseLite::SetFrequency>(freq);
     }
 
-    void TerrainGeneratorGradientComponent::SetInterpolation(FastNoise::Interp interp)
+    void TerrainGeneratorGradientComponent::SetNoiseType(FastNoiseLite::NoiseType type)
     {
-        SetConfigValue<FastNoise::Interp, &TerrainGeneratorGradientConfig::m_interp, &FastNoise::SetInterp>(interp);
-    }
-
-    void TerrainGeneratorGradientComponent::SetNoiseType(FastNoise::NoiseType type)
-    {
-        SetConfigValue<FastNoise::NoiseType, &TerrainGeneratorGradientConfig::m_noiseType, &FastNoise::SetNoiseType>(type);
+        SetConfigValue<FastNoiseLite::NoiseType, &TerrainGeneratorGradientConfig::m_noiseType, &FastNoiseLite::SetNoiseType>(type);
     }
 
     void TerrainGeneratorGradientComponent::SetOctaves(int octaves)
     {
-        SetConfigValue<int, &TerrainGeneratorGradientConfig::m_octaves, &FastNoise::SetFractalOctaves>(octaves);
+        SetConfigValue<int, &TerrainGeneratorGradientConfig::m_octaves, &FastNoiseLite::SetFractalOctaves>(octaves);
     }
 
     void TerrainGeneratorGradientComponent::SetLacunarity(float lacunarity)
     {
-        SetConfigValue<float, &TerrainGeneratorGradientConfig::m_lacunarity, &FastNoise::SetFractalLacunarity>(lacunarity);
+        SetConfigValue<float, &TerrainGeneratorGradientConfig::m_lacunarity, &FastNoiseLite::SetFractalLacunarity>(lacunarity);
     }
 
     void TerrainGeneratorGradientComponent::SetGain(float gain)
     {
-        SetConfigValue<float, &TerrainGeneratorGradientConfig::m_gain, &FastNoise::SetFractalGain>(gain);
+        SetConfigValue<float, &TerrainGeneratorGradientConfig::m_gain, &FastNoiseLite::SetFractalGain>(gain);
     }
 
-    void TerrainGeneratorGradientComponent::SetFractalType(FastNoise::FractalType type)
+    void TerrainGeneratorGradientComponent::SetFractalType(FastNoiseLite::FractalType type)
     {
-        SetConfigValue<FastNoise::FractalType, &TerrainGeneratorGradientConfig::m_fractalType, &FastNoise::SetFractalType>(type);
+        SetConfigValue<FastNoiseLite::FractalType, &TerrainGeneratorGradientConfig::m_fractalType, &FastNoiseLite::SetFractalType>(type);
     }
 
     

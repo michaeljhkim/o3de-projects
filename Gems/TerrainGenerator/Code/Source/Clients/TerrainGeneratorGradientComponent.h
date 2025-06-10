@@ -8,15 +8,16 @@
 #include <GradientSignal/Ebuses/GradientTransformRequestBus.h>
 #include <TerrainGenerator/TerrainGeneratorGradientInterface.h>
 
-#include <External/FastNoise/FastNoise.h>
+//#include <External/FastNoise/FastNoise.h>
+#include <External/FastNoiseLite.h>
 
 namespace AZ
 {
-    AZ_TYPE_INFO_SPECIALIZE(FastNoise::Interp, "{9bb11a1f-2d8b-40c5-8bd9-ecb8bee70dcf}");
-    AZ_TYPE_INFO_SPECIALIZE(FastNoise::NoiseType, "{215ce177-1817-446e-a9b1-bd176505052e}");
-    AZ_TYPE_INFO_SPECIALIZE(FastNoise::FractalType, "{ea959923-ed2e-4ccd-8c99-331c0c13cbd4}");
-    AZ_TYPE_INFO_SPECIALIZE(FastNoise::CellularDistanceFunction, "{e0c14b5e-416a-44a7-a8d0-9319f4fd41b4}");
-    AZ_TYPE_INFO_SPECIALIZE(FastNoise::CellularReturnType, "{1e007e6a-8ee0-4154-85fb-6f0855720730}");
+    //AZ_TYPE_INFO_SPECIALIZE(FastNoiseLite::Interp, "{9bb11a1f-2d8b-40c5-8bd9-ecb8bee70dcf}");
+    AZ_TYPE_INFO_SPECIALIZE(FastNoiseLite::NoiseType, "{215ce177-1817-446e-a9b1-bd176505052e}");
+    AZ_TYPE_INFO_SPECIALIZE(FastNoiseLite::FractalType, "{ea959923-ed2e-4ccd-8c99-331c0c13cbd4}");
+    AZ_TYPE_INFO_SPECIALIZE(FastNoiseLite::CellularDistanceFunction, "{e0c14b5e-416a-44a7-a8d0-9319f4fd41b4}");
+    AZ_TYPE_INFO_SPECIALIZE(FastNoiseLite::CellularReturnType, "{1e007e6a-8ee0-4154-85fb-6f0855720730}");
 }
 
 namespace LmbrCentral
@@ -44,16 +45,16 @@ namespace TerrainGenerator
 
         int m_seed = 1;
         float m_frequency = 1.f;
-        FastNoise::Interp m_interp = FastNoise::Interp::Quintic;
-        FastNoise::NoiseType m_noiseType = FastNoise::NoiseType::PerlinFractal;
+        //FastNoiseLite::Interp m_interp = FastNoiseLite::Interp::Quintic;
+        FastNoiseLite::NoiseType m_noiseType = FastNoiseLite::NoiseType::NoiseType_Perlin;
 
         int m_octaves = 4;
         float m_lacunarity = 2.f;
         float m_gain = 0.5;
-        FastNoise::FractalType m_fractalType = FastNoise::FractalType::FBM;
+        FastNoiseLite::FractalType m_fractalType = FastNoiseLite::FractalType::FractalType_None;
 
-        FastNoise::CellularDistanceFunction m_cellularDistanceFunction = FastNoise::CellularDistanceFunction::Euclidean;
-        FastNoise::CellularReturnType m_cellularReturnType = FastNoise::CellularReturnType::CellValue;
+        FastNoiseLite::CellularDistanceFunction m_cellularDistanceFunction = FastNoiseLite::CellularDistanceFunction::CellularDistanceFunction_Euclidean;
+        FastNoiseLite::CellularReturnType m_cellularReturnType = FastNoiseLite::CellularReturnType::CellularReturnType_CellValue;
         float m_cellularJitter = 0.45f;
     };
 
@@ -149,7 +150,7 @@ namespace TerrainGenerator
 
         // Copied from the FastNoise
         TerrainGeneratorGradientConfig m_configuration;
-        FastNoise m_generator;
+        FastNoiseLite m_generator;
         GradientSignal::GradientTransform m_gradientTransform;
         mutable AZStd::shared_mutex m_queryMutex;
 
@@ -160,24 +161,24 @@ namespace TerrainGenerator
         // Get functions - moved protected definitions to header for simplicity 
         int GetRandomSeed() const { return m_configuration.m_seed; }
         float GetFrequency() const { return m_configuration.m_frequency; }
-        FastNoise::Interp GetInterpolation() const { return m_configuration.m_interp; }
-        FastNoise::NoiseType GetNoiseType() const { return m_configuration.m_noiseType; }
+        //FastNoiseLite::Interp GetInterpolation() const { return m_configuration.m_interp; }
+        FastNoiseLite::NoiseType GetNoiseType() const { return m_configuration.m_noiseType; }
         int GetOctaves() const { return m_configuration.m_octaves; }
         float GetLacunarity() const { return m_configuration.m_lacunarity; }
         float GetGain() const { return m_configuration.m_gain; }
-        FastNoise::FractalType GetFractalType() const { return m_configuration.m_fractalType; }
+        FastNoiseLite::FractalType GetFractalType() const { return m_configuration.m_fractalType; }
 
         // Set functions - defined in cpp
         void SetRandomSeed(int seed) override;
         void SetFrequency(float freq) override;
-        void SetInterpolation(FastNoise::Interp interp) override;
-        void SetNoiseType(FastNoise::NoiseType type) override;
+        //void SetInterpolation(FastNoiseLite::Interp interp) override;
+        void SetNoiseType(FastNoiseLite::NoiseType type) override;
         void SetOctaves(int octaves) override;
         void SetLacunarity(float lacunarity) override;
         void SetGain(float gain) override;
-        void SetFractalType(FastNoise::FractalType type) override;
+        void SetFractalType(FastNoiseLite::FractalType type) override;
 
-        template <typename TValueType, TValueType TerrainGeneratorGradientConfig::*TConfigMember, void (FastNoise::*TMethod)(TValueType)>
+        template <typename TValueType, TValueType TerrainGeneratorGradientConfig::*TConfigMember, void (FastNoiseLite::*TMethod)(TValueType)>
         void SetConfigValue(TValueType value);
     };
 } // namespace TerrainGenerator

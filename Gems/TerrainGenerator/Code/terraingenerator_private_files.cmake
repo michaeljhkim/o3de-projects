@@ -7,6 +7,7 @@ set(FILES
     Source/Clients/TerrainGeneratorGradientComponent.cpp
     Source/Clients/TerrainGeneratorGradientComponent.h
 
-    External/FastNoise/FastNoise.cpp
-    External/FastNoise/FastNoise.h
+    #External/FastNoise/FastNoise.cpp
+    #External/FastNoise/FastNoise.h
+    External/FastNoiseLite.h
 )

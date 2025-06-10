@@ -180,14 +180,14 @@
                     "Parent Entity": "Entity_[1176639161715]",
                     "Transform Data": {
                         "Translate": [
-                            -335.9586181640625,
-                            -430.6679382324219,
-                            374.71759033203125
+                            -434.31304931640625,
+                            -546.141357421875,
+                            165.31419372558594
                         ],
                         "Rotate": [
-                            -23.112987518310547,
-                            24.556140899658203,
-                            -44.236961364746094
+                            -10.71099853515625,
+                            8.463699340820313,
+                            -37.88737869262695
                         ]
                     }
                 },
@@ -353,116 +353,13 @@
                 }
             }
         },
-        "Entity_[564744090548]": {
-            "Id": "Entity_[564744090548]",
-            "Name": "Terrain Spawner",
-            "Components": {
-                "EditorAxisAlignedBoxShapeComponent": {
-                    "$type": "EditorAxisAlignedBoxShapeComponent",
-                    "Id": 10735373134528054543,
-                    "AxisAlignedBoxShape": {
-                        "Configuration": {
-                            "Dimensions": [
-                                2048.0,
-                                2048.0,
-                                50.0
-                            ],
-                            "TranslationOffset": [
-                                0.0,
-                                0.0,
-                                25.0
-                            ]
-                        }
-                    }
-                },
-                "EditorDisabledCompositionComponent": {
-                    "$type": "EditorDisabledCompositionComponent",
-                    "Id": 11810464144137010967
-                },
-                "EditorEntityIconComponent": {
-                    "$type": "EditorEntityIconComponent",
-                    "Id": 1557877228300376701
-                },
-                "EditorEntitySortComponent": {
-                    "$type": "EditorEntitySortComponent",
-                    "Id": 10445974296102523553,
-                    "Child Entity Order": [
-                        "Entity_[920536399325]"
-                    ]
-                },
-                "EditorInspectorComponent": {
-                    "$type": "EditorInspectorComponent",
-                    "Id": 3398811193659366064,
-                    "ComponentOrderEntryArray": [
-                        {
-                            "ComponentId": 6738498889474258959
-                        },
-                        {
-                            "ComponentId": 10194124420268350907,
-                            "SortIndex": 1
-                        },
-                        {
-                            "ComponentId": 10735373134528054543,
-                            "SortIndex": 2
-                        }
-                    ]
-                },
-                "EditorLockComponent": {
-                    "$type": "EditorLockComponent",
-                    "Id": 15034001577561996142
-                },
-                "EditorOnlyEntityComponent": {
-                    "$type": "EditorOnlyEntityComponent",
-                    "Id": 16778566339660688519
-                },
-                "EditorPendingCompositionComponent": {
-                    "$type": "EditorPendingCompositionComponent",
-                    "Id": 11249391811756556551
-                },
-                "EditorTerrainHeightGradientListComponent": {
-                    "$type": "EditorTerrainHeightGradientListComponent",
-                    "Id": 17853646404192064332,
-                    "Configuration": {
-                        "GradientEntities": [
-                            "Entity_[920536399325]"
-                        ]
-                    }
-                },
-                "EditorTerrainLayerSpawnerComponent": {
-                    "$type": "EditorTerrainLayerSpawnerComponent",
-                    "Id": 10194124420268350907
-                },
-                "EditorVisibilityComponent": {
-                    "$type": "EditorVisibilityComponent",
-                    "Id": 594819609958147336
-                },
-                "TransformComponent": {
-                    "$type": "{27F1E1A1-8D9D-4C3B-BD3A-AFB9762449C0} TransformComponent",
-                    "Id": 6738498889474258959,
-                    "Parent Entity": "Entity_[1146574390643]"
-                }
-            }
-        },
-        "Entity_[920536399325]": {
-            "Id": "Entity_[920536399325]",
+        "Entity_[1889844733145]": {
+            "Id": "Entity_[1889844733145]",
             "Name": "Terrain Height",
             "Components": {
                 "EditorDisabledCompositionComponent": {
                     "$type": "EditorDisabledCompositionComponent",
-                    "Id": 13683504678714580163,
-                    "DisabledComponents": {
-                        "EditorPerlinGradientComponent": {
-                            "$type": "EditorPerlinGradientComponent",
-                            "Id": 5697971632935004031,
-                            "Configuration": {
-                                "amplitude": 0.5600000023841858,
-                                "frequency": 0.019999999552965164
-                            },
-                            "Previewer": {
-                                "BoundsEntity": ""
-                            }
-                        }
-                    }
+                    "Id": 13683504678714580163
                 },
                 "EditorEntityIconComponent": {
                     "$type": "EditorEntityIconComponent",
@@ -520,12 +417,10 @@
                     "$type": "TerrainGeneratorGradientEditorComponent",
                     "Id": 2635996014970502059,
                     "Configuration": {
-                        "NoiseType": 2,
-                        "Frequency": 0.019999999552965164,
+                        "Frequency": 0.009999999776482582,
                         "Octaves": 1,
                         "Lacunarity": 0.6000000238418579,
-                        "Gain": 0.6499999761581421,
-                        "Interp": 1
+                        "Gain": 0.6499999761581421
                     },
                     "Previewer": {
                         "BoundsEntity": ""
@@ -535,6 +430,96 @@
                     "$type": "{27F1E1A1-8D9D-4C3B-BD3A-AFB9762449C0} TransformComponent",
                     "Id": 15769297541667019442,
                     "Parent Entity": "Entity_[564744090548]"
+                }
+            }
+        },
+        "Entity_[564744090548]": {
+            "Id": "Entity_[564744090548]",
+            "Name": "Terrain Spawner",
+            "Components": {
+                "EditorAxisAlignedBoxShapeComponent": {
+                    "$type": "EditorAxisAlignedBoxShapeComponent",
+                    "Id": 10735373134528054543,
+                    "AxisAlignedBoxShape": {
+                        "Configuration": {
+                            "Dimensions": [
+                                2048.0,
+                                2048.0,
+                                50.0
+                            ],
+                            "TranslationOffset": [
+                                0.0,
+                                0.0,
+                                25.0
+                            ]
+                        }
+                    }
+                },
+                "EditorDisabledCompositionComponent": {
+                    "$type": "EditorDisabledCompositionComponent",
+                    "Id": 11810464144137010967
+                },
+                "EditorEntityIconComponent": {
+                    "$type": "EditorEntityIconComponent",
+                    "Id": 1557877228300376701
+                },
+                "EditorEntitySortComponent": {
+                    "$type": "EditorEntitySortComponent",
+                    "Id": 10445974296102523553,
+                    "Child Entity Order": [
+                        "Entity_[1889844733145]"
+                    ]
+                },
+                "EditorInspectorComponent": {
+                    "$type": "EditorInspectorComponent",
+                    "Id": 3398811193659366064,
+                    "ComponentOrderEntryArray": [
+                        {
+                            "ComponentId": 6738498889474258959
+                        },
+                        {
+                            "ComponentId": 10194124420268350907,
+                            "SortIndex": 1
+                        },
+                        {
+                            "ComponentId": 10735373134528054543,
+                            "SortIndex": 2
+                        }
+                    ]
+                },
+                "EditorLockComponent": {
+                    "$type": "EditorLockComponent",
+                    "Id": 15034001577561996142
+                },
+                "EditorOnlyEntityComponent": {
+                    "$type": "EditorOnlyEntityComponent",
+                    "Id": 16778566339660688519
+                },
+                "EditorPendingCompositionComponent": {
+                    "$type": "EditorPendingCompositionComponent",
+                    "Id": 11249391811756556551
+                },
+                "EditorTerrainHeightGradientListComponent": {
+                    "$type": "EditorTerrainHeightGradientListComponent",
+                    "Id": 17853646404192064332,
+                    "Configuration": {
+                        "GradientEntities": [
+                            "Entity_[1889844733145]"
+                        ]
+                    }
+                },
+                "EditorTerrainLayerSpawnerComponent": {
+                    "$type": "EditorTerrainLayerSpawnerComponent",
+                    "Id": 10194124420268350907
+                },
+                "EditorVisibilityComponent": {
+                    "$type": "EditorVisibilityComponent",
+                    "Id": 594819609958147336
+                },
+                "TransformComponent": {
+                    "$type": "{27F1E1A1-8D9D-4C3B-BD3A-AFB9762449C0} TransformComponent",
+                    "Id": 6738498889474258959,
+                    "Parent Entity": "Entity_[1146574390643]"
                 }
             }
         }

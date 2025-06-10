@@ -1,7 +1,7 @@
 #pragma once
 
 #include <AzCore/Component/ComponentBus.h>
-#include <External/FastNoise/FastNoise.h>
+#include <External/FastNoiseLite.h>
 
 /*
 - This is the request bus interface
@@ -35,11 +35,8 @@ namespace TerrainGenerator
         virtual float GetFrequency() const = 0;
         virtual void SetFrequency(float freq) = 0;
 
-        virtual FastNoise::Interp GetInterpolation() const = 0;
-        virtual void SetInterpolation(FastNoise::Interp interp) = 0;
-
-        virtual FastNoise::NoiseType GetNoiseType() const = 0;
-        virtual void SetNoiseType(FastNoise::NoiseType type) = 0;
+        virtual FastNoiseLite::NoiseType GetNoiseType() const = 0;
+        virtual void SetNoiseType(FastNoiseLite::NoiseType type) = 0;
 
         virtual int GetOctaves() const = 0;
         virtual void SetOctaves(int octaves) = 0;
@@ -50,8 +47,8 @@ namespace TerrainGenerator
         virtual float GetGain() const = 0;
         virtual void SetGain(float gain) = 0;
 
-        virtual FastNoise::FractalType GetFractalType() const = 0;
-        virtual void SetFractalType(FastNoise::FractalType type) = 0;
+        virtual FastNoiseLite::FractalType GetFractalType() const = 0;
+        virtual void SetFractalType(FastNoiseLite::FractalType type) = 0;
     };
 
     using TerrainGeneratorGradientRequestBus = AZ::EBus<TerrainGeneratorGradientRequests>;

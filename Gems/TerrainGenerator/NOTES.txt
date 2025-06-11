@@ -1,0 +1,12 @@
+- the reason why the current procedurally generated world is not really doing it for me is because there's nothing in it 
+- so I do not actually get a feel for things
+- I noticed when watching other procedurally generated worlds, the terrain is not actually that complicated
+- what made them interesting was the foliage, procedurally generated cities, forrests, mountains, e.t.c 
+
+
+TODO:
+- add basic textures for better visualizing.
+- add first person controller
+- add basic water
+- add skybox
+

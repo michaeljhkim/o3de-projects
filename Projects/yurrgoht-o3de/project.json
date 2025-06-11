@@ -26,6 +26,7 @@
         "DiffuseProbeGrid",
         "EMotionFX",
         "EditorPythonBindings",
+        "FastNoise",
         "GameState",
         "ImGui",
         "LandscapeCanvas",

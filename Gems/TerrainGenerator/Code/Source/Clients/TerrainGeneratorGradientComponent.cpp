@@ -20,6 +20,8 @@ https://www.youtube.com/watch?v=tqhxkLk8NF0&t=63s&ab_channel=rzDmyth
 - This is most ideal for me since I would not even need to determine the positions that need to be calculated
 - I just need to create the algorithm that is to be applied to each position
 
+https://www.redblobgames.com/maps/terrain-from-noise/
+
 */
 
 namespace TerrainGenerator
@@ -345,6 +347,15 @@ namespace TerrainGenerator
         m_gradientTransform = newTransform;
     }
 
+
+/*
+************************************************************************************************************************************
+------------------------------------------------------------------------------------------------------------------------------------
+- Fast noise calculations are done through 'GetNoise()'
+------------------------------------------------------------------------------------------------------------------------------------
+************************************************************************************************************************************
+*/
+    // Fast noise calculations are done through 'GetNoise()'
     float TerrainGeneratorGradientComponent::GetValue(const GradientSignal::GradientSampleParams& sampleParams) const
     {
         AZ::Vector3 uvw;

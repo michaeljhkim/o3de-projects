@@ -355,7 +355,7 @@
         },
         "Entity_[1889844733145]": {
             "Id": "Entity_[1889844733145]",
-            "Name": "Terrain Height",
+            "Name": "Terrain Gradient Mixer",
             "Components": {
                 "EditorDisabledCompositionComponent": {
                     "$type": "EditorDisabledCompositionComponent",
@@ -367,24 +367,11 @@
                 },
                 "EditorEntitySortComponent": {
                     "$type": "EditorEntitySortComponent",
-                    "Id": 13922861257730260938
-                },
-                "EditorGradientTransformComponent": {
-                    "$type": "EditorGradientTransformComponent",
-                    "Id": 14052015258585524872,
-                    "Configuration": {
-                        "ShapeReference": "",
-                        "Bounds": [
-                            2048.0,
-                            2048.0,
-                            50.0
-                        ],
-                        "Center": [
-                            0.0,
-                            0.0,
-                            25.0
-                        ]
-                    }
+                    "Id": 13922861257730260938,
+                    "Child Entity Order": [
+                        "Entity_[901405779789]",
+                        "Entity_[940060485453]"
+                    ]
                 },
                 "EditorInspectorComponent": {
                     "$type": "EditorInspectorComponent",
@@ -393,6 +380,28 @@
                 "EditorLockComponent": {
                     "$type": "EditorLockComponent",
                     "Id": 16030022863994709023
+                },
+                "EditorMixedGradientComponent": {
+                    "$type": "EditorMixedGradientComponent",
+                    "Id": 13893396275765427998,
+                    "Configuration": {
+                        "Layers": [
+                            {
+                                "Operation": 0,
+                                "Gradient": {
+                                    "GradientId": "Entity_[901405779789]"
+                                }
+                            },
+                            {
+                                "Gradient": {
+                                    "GradientId": "Entity_[940060485453]"
+                                }
+                            }
+                        ]
+                    },
+                    "Previewer": {
+                        "BoundsEntity": ""
+                    }
                 },
                 "EditorOnlyEntityComponent": {
                     "$type": "EditorOnlyEntityComponent",
@@ -413,19 +422,6 @@
                     "$type": "EditorVisibilityComponent",
                     "Id": 15323191526833215721
                 },
-                "TerrainGeneratorGradientEditorComponent": {
-                    "$type": "TerrainGeneratorGradientEditorComponent",
-                    "Id": 2635996014970502059,
-                    "Configuration": {
-                        "Frequency": 0.009999999776482582,
-                        "Octaves": 1,
-                        "Lacunarity": 0.6000000238418579,
-                        "Gain": 0.6499999761581421
-                    },
-                    "Previewer": {
-                        "BoundsEntity": ""
-                    }
-                },
                 "TransformComponent": {
                     "$type": "{27F1E1A1-8D9D-4C3B-BD3A-AFB9762449C0} TransformComponent",
                     "Id": 15769297541667019442,
@@ -445,12 +441,12 @@
                             "Dimensions": [
                                 2048.0,
                                 2048.0,
-                                50.0
+                                500.0
                             ],
                             "TranslationOffset": [
                                 0.0,
                                 0.0,
-                                25.0
+                                100.0
                             ]
                         }
                     }
@@ -520,6 +516,162 @@
                     "$type": "{27F1E1A1-8D9D-4C3B-BD3A-AFB9762449C0} TransformComponent",
                     "Id": 6738498889474258959,
                     "Parent Entity": "Entity_[1146574390643]"
+                }
+            }
+        },
+        "Entity_[901405779789]": {
+            "Id": "Entity_[901405779789]",
+            "Name": "Terrain Height",
+            "Components": {
+                "EditorDisabledCompositionComponent": {
+                    "$type": "EditorDisabledCompositionComponent",
+                    "Id": 13683504678714580163
+                },
+                "EditorEntityIconComponent": {
+                    "$type": "EditorEntityIconComponent",
+                    "Id": 14001611520634931782
+                },
+                "EditorEntitySortComponent": {
+                    "$type": "EditorEntitySortComponent",
+                    "Id": 13922861257730260938
+                },
+                "EditorGradientTransformComponent": {
+                    "$type": "EditorGradientTransformComponent",
+                    "Id": 14052015258585524872,
+                    "Configuration": {
+                        "ShapeReference": "",
+                        "Bounds": [
+                            2048.0,
+                            2048.0,
+                            500.0
+                        ],
+                        "Center": [
+                            0.0,
+                            0.0,
+                            100.0
+                        ]
+                    }
+                },
+                "EditorInspectorComponent": {
+                    "$type": "EditorInspectorComponent",
+                    "Id": 11149459679120254721
+                },
+                "EditorLockComponent": {
+                    "$type": "EditorLockComponent",
+                    "Id": 16030022863994709023
+                },
+                "EditorOnlyEntityComponent": {
+                    "$type": "EditorOnlyEntityComponent",
+                    "Id": 3700400139841197168
+                },
+                "EditorPendingCompositionComponent": {
+                    "$type": "EditorPendingCompositionComponent",
+                    "Id": 2484389983283982010
+                },
+                "EditorPerlinGradientComponent": {
+                    "$type": "EditorPerlinGradientComponent",
+                    "Id": 7526268966737950675,
+                    "Configuration": {
+                        "amplitude": 0.0,
+                        "frequency": 0.00009999999747378752
+                    },
+                    "Previewer": {
+                        "BoundsEntity": ""
+                    }
+                },
+                "EditorReferenceShapeComponent": {
+                    "$type": "EditorReferenceShapeComponent",
+                    "Id": 4788380883912620169,
+                    "Configuration": {
+                        "ShapeEntityId": "Entity_[564744090548]"
+                    }
+                },
+                "EditorVisibilityComponent": {
+                    "$type": "EditorVisibilityComponent",
+                    "Id": 15323191526833215721
+                },
+                "TransformComponent": {
+                    "$type": "{27F1E1A1-8D9D-4C3B-BD3A-AFB9762449C0} TransformComponent",
+                    "Id": 15769297541667019442,
+                    "Parent Entity": "Entity_[1889844733145]"
+                }
+            }
+        },
+        "Entity_[940060485453]": {
+            "Id": "Entity_[940060485453]",
+            "Name": "Terrain Height 2",
+            "Components": {
+                "EditorDisabledCompositionComponent": {
+                    "$type": "EditorDisabledCompositionComponent",
+                    "Id": 13683504678714580163
+                },
+                "EditorEntityIconComponent": {
+                    "$type": "EditorEntityIconComponent",
+                    "Id": 14001611520634931782
+                },
+                "EditorEntitySortComponent": {
+                    "$type": "EditorEntitySortComponent",
+                    "Id": 13922861257730260938
+                },
+                "EditorGradientTransformComponent": {
+                    "$type": "EditorGradientTransformComponent",
+                    "Id": 14052015258585524872,
+                    "Configuration": {
+                        "ShapeReference": "",
+                        "Bounds": [
+                            2048.0,
+                            2048.0,
+                            500.0
+                        ],
+                        "Center": [
+                            0.0,
+                            0.0,
+                            100.0
+                        ]
+                    }
+                },
+                "EditorInspectorComponent": {
+                    "$type": "EditorInspectorComponent",
+                    "Id": 11149459679120254721
+                },
+                "EditorLockComponent": {
+                    "$type": "EditorLockComponent",
+                    "Id": 16030022863994709023
+                },
+                "EditorOnlyEntityComponent": {
+                    "$type": "EditorOnlyEntityComponent",
+                    "Id": 3700400139841197168
+                },
+                "EditorPendingCompositionComponent": {
+                    "$type": "EditorPendingCompositionComponent",
+                    "Id": 2484389983283982010
+                },
+                "EditorPerlinGradientComponent": {
+                    "$type": "EditorPerlinGradientComponent",
+                    "Id": 7526268966737950675,
+                    "Configuration": {
+                        "amplitude": 0.0,
+                        "frequency": 0.004999999888241291
+                    },
+                    "Previewer": {
+                        "BoundsEntity": ""
+                    }
+                },
+                "EditorReferenceShapeComponent": {
+                    "$type": "EditorReferenceShapeComponent",
+                    "Id": 4788380883912620169,
+                    "Configuration": {
+                        "ShapeEntityId": "Entity_[564744090548]"
+                    }
+                },
+                "EditorVisibilityComponent": {
+                    "$type": "EditorVisibilityComponent",
+                    "Id": 15323191526833215721
+                },
+                "TransformComponent": {
+                    "$type": "{27F1E1A1-8D9D-4C3B-BD3A-AFB9762449C0} TransformComponent",
+                    "Id": 15769297541667019442,
+                    "Parent Entity": "Entity_[1889844733145]"
                 }
             }
         }

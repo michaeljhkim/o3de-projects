@@ -4,6 +4,12 @@
 - what made them interesting was the foliage, procedurally generated cities, forrests, mountains, e.t.c 
 
 
+https://www.youtube.com/watch?v=tqhxkLk8NF0&t=63s&ab_channel=rzDmyth
+
+https://www.redblobgames.com/maps/terrain-from-noise/
+
+
+
 TODO:
 - add basic textures for better visualizing.
 - add first person controller

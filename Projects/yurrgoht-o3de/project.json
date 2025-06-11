@@ -27,12 +27,12 @@
         "EMotionFX",
         "EditorPythonBindings",
         "FastNoise",
+        "FirstPersonController==1.0.0",
         "GameState",
         "ImGui",
         "LandscapeCanvas",
         "LyShine",
         "MiniAudio",
-        "PhysX",
         "PrefabBuilder",
         "PrimitiveAssets",
         "RemoteTools",
@@ -44,7 +44,7 @@
         "TerrainGenerator==1.0.0",
         "TextureAtlas",
         "WhiteBox",
-        "yurrgoht-o3de"
+        "yurrgoht-o3de==0.0.1"
     ],
     "engine_version": "4.2.0"
 }

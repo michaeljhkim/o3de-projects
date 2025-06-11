@@ -11,17 +11,12 @@
 //#include <GradientSignal/Ebuses/GradientTransformRequestBus.h>
 
 /*
-https://www.youtube.com/watch?v=tqhxkLk8NF0&t=63s&ab_channel=rzDmyth
-
 - From what I can tell, the GetValues(positions, outValues) function is where the noise is calculated and applied 
 - 'Terrain Height Gradient List' provides a list of world positions that it needs to calculate noise for
 - GetValues() takes the positions, pops them into the fast noise algorithm, then returns the values as outputs
 
 - This is most ideal for me since I would not even need to determine the positions that need to be calculated
 - I just need to create the algorithm that is to be applied to each position
-
-https://www.redblobgames.com/maps/terrain-from-noise/
-
 */
 
 namespace TerrainGenerator

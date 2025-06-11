@@ -33,5 +33,6 @@ if(NOT PROJECT_NAME)
         LANGUAGES C CXX
         VERSION 1.0.0.0
     )
+    add_compile_options(-Wno-error)
     o3de_initialize()
 endif()

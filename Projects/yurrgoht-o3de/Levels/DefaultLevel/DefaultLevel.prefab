@@ -62,6 +62,11 @@
                     },
                     "DetailMaterialConfiguration": {
                         "FadeDistance": 128.0
+                    },
+                    "ClipmapConfiguration": {
+                        "ClipmapEnabled": true,
+                        "ClipmapSize": 512,
+                        "DetailClipmapMaxResolution": 1024.0
                     }
                 }
             },
@@ -180,14 +185,14 @@
                     "Parent Entity": "Entity_[1176639161715]",
                     "Transform Data": {
                         "Translate": [
-                            -434.31304931640625,
-                            -546.141357421875,
-                            165.31419372558594
+                            308.2984313964844,
+                            599.5595703125,
+                            98.81926727294922
                         ],
                         "Rotate": [
-                            -10.71099853515625,
-                            8.463699340820313,
-                            -37.88737869262695
+                            -3.524549961090088,
+                            17.403451919555664,
+                            -78.36387634277344
                         ]
                     }
                 },
@@ -436,17 +441,19 @@
                 "EditorAxisAlignedBoxShapeComponent": {
                     "$type": "EditorAxisAlignedBoxShapeComponent",
                     "Id": 10735373134528054543,
+                    "DisplayFilled": false,
                     "AxisAlignedBoxShape": {
                         "Configuration": {
+                            "IsFilled": false,
                             "Dimensions": [
                                 2048.0,
                                 2048.0,
-                                500.0
+                                50.0
                             ],
                             "TranslationOffset": [
                                 0.0,
                                 0.0,
-                                100.0
+                                25.0
                             ]
                         }
                     }
@@ -543,12 +550,12 @@
                         "Bounds": [
                             2048.0,
                             2048.0,
-                            500.0
+                            50.0
                         ],
                         "Center": [
                             0.0,
                             0.0,
-                            100.0
+                            25.0
                         ]
                     }
                 },
@@ -573,7 +580,7 @@
                     "Id": 7526268966737950675,
                     "Configuration": {
                         "amplitude": 0.0,
-                        "frequency": 0.00009999999747378752
+                        "frequency": 0.004999999888241291
                     },
                     "Previewer": {
                         "BoundsEntity": ""
@@ -621,12 +628,12 @@
                         "Bounds": [
                             2048.0,
                             2048.0,
-                            500.0
+                            50.0
                         ],
                         "Center": [
                             0.0,
                             0.0,
-                            100.0
+                            25.0
                         ]
                     }
                 },
@@ -651,7 +658,7 @@
                     "Id": 7526268966737950675,
                     "Configuration": {
                         "amplitude": 0.0,
-                        "frequency": 0.004999999888241291
+                        "frequency": 0.05000000074505806
                     },
                     "Previewer": {
                         "BoundsEntity": ""
